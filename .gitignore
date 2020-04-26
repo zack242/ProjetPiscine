@@ -20,7 +20,8 @@
 *.mod
 *.smod
 *.layout
-*.cbp
+*.depend
+
 
 # Compiled Static libraries
 *.lai
@@ -32,3 +33,7 @@
 *.exe
 *.out
 *.app
+
+#Generated directories 
+bin/
+obj/

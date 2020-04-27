@@ -44,6 +44,7 @@ for(auto s : m_sommets)
 
     }
     std::cout<<"\n Somme : "<<S_indice;
+    s->setIndice_vecteurP(S_indice);
     S_total+=S_indice*S_indice;
 
 }
@@ -53,7 +54,7 @@ temp=sqrt(S_total);
 
 for(auto k : m_sommets)
     {
-k->setIndice_vecteurP(S_total/temp);
+k->setIndice_vecteurP(k->getIndice_vecteurP()/temp);
 std::cout<<"\n Indice : "<<k->getIndice_vecteurP();
 
 }

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <allegro.h>
 #include <stdio.h>
+#include <math.h>
 
 
 

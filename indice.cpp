@@ -44,11 +44,11 @@ for(auto s : m_sommets)
 
     }
     std::cout<<"\n Somme : "<<S_indice;
-    S_total+=S_indice;
+    S_total+=S_indice*S_indice;
 
 }
 
-temp=abs(S_total);
+temp=sqrt(S_total);
 
 
 for(auto k : m_sommets)

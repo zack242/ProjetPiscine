@@ -14,7 +14,7 @@ void Chargement_Graphe();
 
 struct indice
 {
-    float degre_nn,degre_n;
+    float degre_non_normamise,degre_nomralise;
 };
 
 
@@ -147,8 +147,8 @@ public :
                 throw std::runtime_error("Probleme lecture des coords du sommet");
 
             indice temp;
-            temp.degre_n=0;
-            temp.degre_nn=0;
+            temp.degre_non_normamise=0;
+            temp.degre_nomralise=0;
             m_sommets.push_back( new Sommet{index,nom,x,y,temp});
 
 

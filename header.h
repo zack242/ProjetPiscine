@@ -66,9 +66,14 @@ public :
     {
         std::cout<<"     sommet "<<m_nom<<"-"<<m_num<<" Coords : "<<m_x<<" ; "<<m_y<<" : ";
         for (auto s : m_successeurs)
-            std::cout<<s.first->getNum()<<" ("<<m_indice.degre_nomralise<<") ("<<m_indice.degre_non_normamise<<") ";
+            std::cout<<s.first->getNum();//" ("<<m_indice.degre_nomralise<<") ("<<m_indice.degre_non_normamise<<") ";
     }
+    void afficherindicedegre() const
+    {
+        std::cout<<" sommet : "<<m_nom<< std::endl;
+        std::cout<<"indice de degre normalise : "<<m_indice.degre_nomralise<<" , \n"<<"indice de degre nonnormalise : "<<m_indice.degre_non_normamise<<" .";
 
+    }
 
     void Dessiner(BITMAP* bmp)
     {
@@ -207,7 +212,15 @@ public :
         }
     }
 
+    void afficherindicedegre() const
+    {
+        for (auto s : m_sommets)
+        {
+            s->afficherindicedegre();
+            std::cout<<std::endl;
+        }
 
+    }
     void Dessiner()
     {
 

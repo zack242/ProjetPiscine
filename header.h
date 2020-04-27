@@ -8,13 +8,12 @@
 #include <stdio.h>
 
 
-///Proto
-void menu();
-void Chargement_Graphe();
+
 
 struct indice
 {
     float degre_non_normamise,degre_nomralise;
+    float vecteur_propre;
 };
 
 
@@ -26,6 +25,7 @@ private :
     std::string m_nom;
     int m_x,m_y;
     indice m_indice;
+
     ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
     std::map<const Sommet*,int> m_successeurs;
 
@@ -38,15 +38,36 @@ public :
     {
         return m_num;
     }
-     int getX()const
+    int getX()const
     {
         return m_x;
     }
 
-      int getY()const
+    int getY()const
     {
         return m_y;
     }
+
+    float getIndice_Deg() const
+    {
+        return m_indice.degre_non_normamise ;
+
+    }
+
+     float getIndice_vecteurP() const
+    {
+        return m_indice.vecteur_propre  ;
+
+    }
+
+   void setIndice_vecteurP(float CVP)
+    {
+        m_indice.vecteur_propre=CVP;
+
+    }
+
+
+
 
     ///accesseur : pour la liste des successeurs
     const std::map<const Sommet*,int>& getSuccesseurs()const
@@ -55,7 +76,7 @@ public :
     }
 
     /* pour ajouter un successeur à la liste*/
-   void ajouterSucc(const Sommet*s,int poids)
+    void ajouterSucc(const Sommet*s,int poids)
     {
         m_successeurs[s]=poids;
     }
@@ -66,29 +87,33 @@ public :
     {
         std::cout<<"     sommet "<<m_nom<<"-"<<m_num<<" Coords : "<<m_x<<" ; "<<m_y<<" : ";
         for (auto s : m_successeurs)
-            std::cout<<s.first->getNum()<<" ("<<s.second<<") ";
+            std::cout<<s.first->getNum()<<" ";
     }
+    void afficherindicedegre() const
+    {
+        std::cout<<" sommet : "<<m_nom<< std::endl;
+        std::cout<<"indice de degre normalise : "<<m_indice.degre_nomralise<<" , \n"<<"indice de degre nonnormalise : "<<m_indice.degre_non_normamise<<" .";
 
+    }
 
     void Dessiner(BITMAP* bmp)
     {
 
-    const char *nom = m_nom.c_str();
-    circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
-    textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
+        const char *nom = m_nom.c_str();
+        circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
+        textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
 
-    for (auto s : m_successeurs)
+        for (auto s : m_successeurs)
         {
 
-      line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
+            line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
 
-         }
+        }
 
 
     }
 
-
-    void indice_degre(int ordre);
+    void indice_degre(float ordre);
 
 
 
@@ -98,6 +123,8 @@ public :
 
 class Graphe
 {
+
+
 
 private :
 
@@ -109,6 +136,8 @@ public :
     /* La construction du réseau peut se faire à partir d'un fichier
      dont le nom est passé en paramètre
     */
+    Graphe() {};
+
 
     Graphe(std::string fichier_topo,std::string fichier_ponde )
     {
@@ -126,7 +155,7 @@ public :
 
         int ordre;
         ifs >> ordre;
-        std::cout<<ordre;
+
         if ( ifs.fail() )
             throw std::runtime_error("Probleme lecture ordre du graphe");
 
@@ -138,7 +167,7 @@ public :
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture de l'index du sommet");
 
-                 std::string nom ;
+            std::string nom ;
             ifs >> nom ;
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture du nom du sommet");
@@ -151,6 +180,7 @@ public :
             indice temp;
             temp.degre_non_normamise=0;
             temp.degre_nomralise=0;
+            temp.vecteur_propre=1;
             m_sommets.push_back( new Sommet{index,nom,x,y,temp});
 
 
@@ -196,7 +226,7 @@ public :
 
         std::cout<<std::endl<<"graphe ";
         if(m_orientation)
-            std::cout<<"oriente"<<std::endl<<"  ";
+            std::cout<<"  oriente"<<std::endl<<"  ";
         else
             std::cout<<"non oriente"<<std::endl<<"  ";
         std::cout<<"ordre = "<<m_sommets.size()<<std::endl<<"  ";
@@ -208,36 +238,45 @@ public :
         }
     }
 
+    void afficherindicedegre() const
+    {
+        for (auto s : m_sommets)
+        {
+            s->afficherindicedegre();
+            std::cout<<std::endl;
+        }
 
+    }
     void Dessiner()
     {
 
-    BITMAP* page ;
-    page=create_bitmap(SCREEN_W,SCREEN_H);
-    clear_to_color(page,makecol(255,255,255));
+        BITMAP* page ;
+        page=create_bitmap(SCREEN_W,SCREEN_H);
+        clear_to_color(page,makecol(255,255,255));
 
-   for (auto s : m_sommets)
+        for (auto s : m_sommets)
         {
             s->Dessiner(page);
 
         }
 
-    blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
 
 
     }
 
-    void calcul_indice_degres() ;
+    void calcul_indice_degres();
 
-
-
-
+    void calcul_vecteur_propre();
 
 
 
 };
 
+///Proto
+Graphe* menu(Graphe* A);
 
+Graphe* Chargement_Graphe();
 
 
 

@@ -4,13 +4,13 @@
 #include <map>
 #include <iostream>
 #include <fstream>
-
+#include <allegro.h>
+#include <stdio.h>
 
 
 ///Proto
 void menu();
 void Chargement_Graphe();
-
 
 
 
@@ -34,6 +34,15 @@ public :
     {
         return m_num;
     }
+     int getX()const
+    {
+        return m_x;
+    }
+
+      int getY()const
+    {
+        return m_y;
+    }
 
     ///accesseur : pour la liste des successeurs
     const std::map<const Sommet*,int>& getSuccesseurs()const
@@ -55,6 +64,23 @@ public :
         for (auto s : m_successeurs)
             std::cout<<s.first->getNum()<<" ("<<s.second<<") ";
     }
+
+
+    void Dessiner(BITMAP* bmp)
+    {
+    const char *nom = m_nom.c_str();
+    circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
+    textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
+
+    for (auto s : m_successeurs)
+        {
+
+      line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
+
+         }
+
+    }
+
 
 
 
@@ -157,6 +183,7 @@ public :
     /*méthode d'affichage*/
     void afficher() const
     {
+
         std::cout<<std::endl<<"graphe ";
         if(m_orientation)
             std::cout<<"oriente"<<std::endl<<"  ";
@@ -171,6 +198,24 @@ public :
         }
     }
 
+
+    void Dessiner()
+    {
+
+    BITMAP* page ;
+    page=create_bitmap(SCREEN_W,SCREEN_H);
+    clear_to_color(page,makecol(255,255,255));
+
+   for (auto s : m_sommets)
+        {
+            s->Dessiner(page);
+
+        }
+
+    blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+
+
+    }
 
 };
 

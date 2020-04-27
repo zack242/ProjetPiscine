@@ -37,6 +37,7 @@
 			<Add library="alleg44.dll" />
 		</Linker>
 		<Unit filename="header.h" />
+		<Unit filename="indice.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

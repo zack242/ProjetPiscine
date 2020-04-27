@@ -36,12 +36,12 @@ public :
     {
         return m_num;
     }
-     int getX()const
+    int getX()const
     {
         return m_x;
     }
 
-      int getY()const
+    int getY()const
     {
         return m_y;
     }
@@ -53,7 +53,7 @@ public :
     }
 
     /* pour ajouter un successeur à la liste*/
-   void ajouterSucc(const Sommet*s,int poids)
+    void ajouterSucc(const Sommet*s,int poids)
     {
         m_successeurs[s]=poids;
     }
@@ -76,18 +76,28 @@ public :
     void Dessiner(BITMAP* bmp)
     {
 
-    const char *nom = m_nom.c_str();
-    circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
-    textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
+        const char *nom = m_nom.c_str();
+        circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
+        textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
 
-    for (auto s : m_successeurs)
+        for (auto s : m_successeurs)
         {
 
-      line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
+            line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
 
-         }
+        }
 
 
+    }
+    void sauvgarderindice() const
+    {
+std::fstream ofs("indice.txt");
+ofs.seekp(0,std::ios::end);
+
+
+        ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
+
+        ofs.close();
     }
 
     void indice_degre(float ordre);
@@ -113,7 +123,7 @@ public :
     /* La construction du réseau peut se faire à partir d'un fichier
      dont le nom est passé en paramètre
     */
-    Graphe(){};
+    Graphe() {};
 
 
     Graphe(std::string fichier_topo,std::string fichier_ponde )
@@ -144,7 +154,7 @@ public :
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture de l'index du sommet");
 
-                 std::string nom ;
+            std::string nom ;
             ifs >> nom ;
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture du nom du sommet");
@@ -226,18 +236,30 @@ public :
     void Dessiner()
     {
 
-    BITMAP* page ;
-    page=create_bitmap(SCREEN_W,SCREEN_H);
-    clear_to_color(page,makecol(255,255,255));
+        BITMAP* page ;
+        page=create_bitmap(SCREEN_W,SCREEN_H);
+        clear_to_color(page,makecol(255,255,255));
 
-   for (auto s : m_sommets)
+        for (auto s : m_sommets)
         {
             s->Dessiner(page);
 
         }
 
-    blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
 
+
+    }
+    void sauvgarder() const
+    {
+        std::ofstream ofs{"indice.txt"};
+            for (auto s : m_sommets)
+        {
+            s->sauvgarderindice();
+
+        }
+
+        std::cout<<"sauvgarde reussi"<<std::endl;
 
     }
 

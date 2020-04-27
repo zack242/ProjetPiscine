@@ -67,6 +67,7 @@ Graphe* menu(Graphe* A)
 
                 A->calcul_indice_degres();
                 A->afficherindicedegre();
+                A->sauvgarder();
                 break;
 
 

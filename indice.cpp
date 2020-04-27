@@ -14,7 +14,7 @@ for( auto s : m_successeurs)
 m_indice.degre_non_normamise=nbrsucc;
 m_indice.degre_nomralise=(nbrsucc/ordre);
 
-std::cout<<"-----------"<<m_indice.degre_non_normamise;
+
 }
 
 void Graphe::calcul_indice_degres()

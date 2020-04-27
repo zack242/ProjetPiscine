@@ -64,7 +64,7 @@ public :
     {
         std::cout<<"     sommet "<<m_nom<<"-"<<m_num<<" Coords : "<<m_x<<" ; "<<m_y<<" : ";
         for (auto s : m_successeurs)
-            std::cout<<s.first->getNum();//" ("<<m_indice.degre_nomralise<<") ("<<m_indice.degre_non_normamise<<") ";
+            std::cout<<s.first->getNum()<<" ";
     }
     void afficherindicedegre() const
     {
@@ -243,15 +243,11 @@ public :
 
 
 
-
-
-
-
 };
 
 ///Proto
-void menu();
-void menu2(Graphe A);
+Graphe menu(Graphe A);
+
 Graphe Chargement_Graphe();
 
 

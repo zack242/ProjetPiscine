@@ -5,26 +5,32 @@ using namespace std;
 
 int main()
 {
- allegro_init();
+    allegro_init();
+    Graphe A{};
 
 
     cout << "--Projet Theorie des graphes-- \n" << endl;
 
     while(!0)
-        menu();
+    {
+        A=menu(A);
+       // A.afficher();
+
+    }
+
 
 
     return 0;
 
-}END_OF_MAIN();
+}
+END_OF_MAIN();
 
-void menu()
+Graphe menu(Graphe A)
 {
-    int choix ;
-    Graphe A{};
+    int choix=0,choix_indice=0,choix_action=0 ;
 
 
-    std::cout<<"            Menu \n\n";
+    std::cout<<"\n          Menu \n\n";
 
     std::cout<<"1/Chargement d'un Graphe. \n";
     std::cout<<"2/Chagement du systeme de ponderation. \n";
@@ -32,96 +38,89 @@ void menu()
     std::cout<<"4/Tester la vulnerabilite. \n";
     std::cout<<"99/Exit\n\n ";
     std::cout<<"Votre choix : " ;
+
     std::cin>>choix ;
-    std::cout<<"\n";
+
+
 
     switch (choix)
     {
 
     case 1 :
-
         A=Chargement_Graphe();
         break;
 
     case 3 :
-        menu2(A);
-
-    case 99 :
-
-        exit(0);
-        break;
-
-    }
-
-
-
-}
-
-void menu2(Graphe A)
-{
-    int choix_indice,choix ;
-
-    std::cout<<"           Choix indice \n\n";
-
-    std::cout<<"1/La centralite de degre \n";
-    std::cout<<"2/La centralite de vecteur propre \n";
-    std::cout<<"3/La centralite de proximite \n";
-    std::cout<<"4/La centralite d’intermediarite \n";
-    std::cout<<"99/Exit\n\n ";
-    std::cout<<"Votre choix : " ;
-    std::cin>>choix_indice ;
-    std::cout<<"\n";
-
-    std::cout<<"            Que faire ? \n\n";
-
-    std::cout<<"1/Calculer l'indice\n";
-    std::cout<<"2/Afficher l'indice\n";
-    std::cout<<"3/Sauvegarder l'indice\n";
-    std::cout<<"99/Exit\n\n ";
-    std::cout<<"Votre choix : " ;
-    std::cin>>choix ;
-    std::cout<<"\n";
-
-    switch (choix_indice)
     {
 
-    case 1 :
-        switch(choix)
+
+        std::cout<<"           Choix indice \n\n";
+
+        std::cout<<"1/La centralite de degre \n";
+        std::cout<<"2/La centralite de vecteur propre \n";
+        std::cout<<"3/La centralite de proximite \n";
+        std::cout<<"4/La centralite d’intermediarite \n";
+        std::cout<<"Votre choix : " ;
+
+        std::cin>>choix_indice ;
+        std::cout<<"\n";
+
+        std::cout<<"            Que faire ? \n\n";
+
+        std::cout<<"1/Calculer et Afficher l'indice\n";
+        std::cout<<"3/Sauvegarder l'indice\n";
+        std::cout<<"7/Revenir au menu\n\n ";
+        std::cout<<"Votre choix : " ;
+
+        std::cin>>choix_action ;
+        std::cout<<"\n";
+
+
+
+        switch (choix_indice)
         {
-        case 1 :
-           // A.calcul_indice_degres();
 
-            break;
+        case 1 : //Indice degres
+        {
 
-        case 2 :
+            switch(choix_action)
+            {
+            case 1 :
 
+                A.calcul_indice_degres();
+                A.afficherindicedegre();
+                break;
 
-            break ;
+            case 2 :
+                A.afficherindicedegre();
+            default :
+                break;
 
+           }
 
-        case 3 :
-            break;
-
-
+        }
+        break;
 
         default :
-
-            break;
+            break ;
 
 
         }
 
+    }
 
-        break;
+    default :
+        break ;
+
+    }
 
 
+    return A;
 
-    case 99 :
-        exit(0);
-        break;
 }
 
-}
+
+
 
 Graphe Chargement_Graphe()
 {
@@ -140,20 +139,19 @@ Graphe Chargement_Graphe()
     std::string fichier_ponde;
 
     std::cout<<"Nom du fichier de topologie : ";
-   // std::cin>>fichier_topo;
+    // std::cin>>fichier_topo;
     std::cout<<"Nom du fichier de ponderations : ";
-  //  std::cin>>fichier_ponde;
-    std::cout<<"\n Chargement du graphe avec "<<fichier_topo << "et" <<fichier_ponde<< " \n\n" ;
-     fichier_ponde="poids.txt"; /// A vire a la fin
-     fichier_topo="graphe.txt";
+    //  std::cin>>fichier_ponde;
+    fichier_ponde="poids.txt"; /// A vire a la fin
+    fichier_topo="graphe.txt";
+    std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
+
 
     Graphe A { fichier_topo,fichier_ponde };
 
     A.Dessiner();
-    A.calcul_indice_degres();
     A.afficher();
-    A.afficherindicedegre();
 
-return A;
+    return A;
 
 }

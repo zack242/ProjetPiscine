@@ -8,9 +8,7 @@
 #include <stdio.h>
 
 
-///Proto
-void menu();
-void Chargement_Graphe();
+
 
 struct indice
 {
@@ -108,6 +106,8 @@ public :
     /* La construction du réseau peut se faire à partir d'un fichier
      dont le nom est passé en paramètre
     */
+    Graphe(){};
+
 
     Graphe(std::string fichier_topo,std::string fichier_ponde )
     {
@@ -236,7 +236,10 @@ public :
 
 };
 
-
+///Proto
+void menu();
+void menu2(Graphe A);
+Graphe Chargement_Graphe();
 
 
 

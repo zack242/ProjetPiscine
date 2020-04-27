@@ -21,6 +21,7 @@ int main()
 void menu()
 {
     int choix ;
+    Graphe A{};
 
 
     std::cout<<"            Menu \n\n";
@@ -39,11 +40,11 @@ void menu()
 
     case 1 :
 
-        Chargement_Graphe();
+        A=Chargement_Graphe();
         break;
 
     case 3 :
-        menu2();
+        menu2(A);
 
     case 99 :
 
@@ -56,48 +57,11 @@ void menu()
 
 }
 
-void menu2()
+void menu2(Graphe A)
 {
-    int choix ;
+    int choix_indice,choix ;
 
-
-    std::cout<<"            Menu indice \n\n";
-
-    std::cout<<"1/Calculer l'indice\n";
-    std::cout<<"2/Afficher l'indice\n";
-    std::cout<<"3/Sauvegarder l'indice\n";
-    std::cout<<"99/Exit\n\n ";
-    std::cout<<"Votre choix : " ;
-    std::cin>>choix ;
-    std::cout<<"\n";
-
-    switch (choix)
-    {
-
-    case 1 :
-
-        Calculer_indice();
-        break;
-
-    case 2:
-        Afficher_indice();
-        break;
-
-    case 3 :
-       Sauvegarder_indice();
-       break;
-
-    case 99 :
-        exit(0);
-        break;
-}
-
-void Calculer_indice()
-    {
-         int choix_indice ;
-
-
-    std::cout<<"            menu calcul indice \n\n";
+    std::cout<<"           Choix indice \n\n";
 
     std::cout<<"1/La centralite de degre \n";
     std::cout<<"2/La centralite de vecteur propre \n";
@@ -108,41 +72,57 @@ void Calculer_indice()
     std::cin>>choix_indice ;
     std::cout<<"\n";
 
+    std::cout<<"            Que faire ? \n\n";
+
+    std::cout<<"1/Calculer l'indice\n";
+    std::cout<<"2/Afficher l'indice\n";
+    std::cout<<"3/Sauvegarder l'indice\n";
+    std::cout<<"99/Exit\n\n ";
+    std::cout<<"Votre choix : " ;
+    std::cin>>choix ;
+    std::cout<<"\n";
+
     switch (choix_indice)
     {
 
     case 1 :
+        switch(choix)
+        {
+        case 1 :
+           // A.calcul_indice_degres();
+           std::cout<<"okok";
+            break;
 
-        centralite_degre();
-        break;
+        case 2 :
+             std::cout<<"okok";
+            break ;
 
-    case 2 :
 
-        centralite_vecteur_propre();
-        break;
+        case 3 :
+            break;
 
-    case 3 :
 
-        centralite_proximite();
-        break;
 
-    case 4 :
+        default :
 
-        centralite_intermediarite();
+            break;
+
+
+        }
+
+
         break;
 
 
 
     case 99 :
-
         exit(0);
         break;
+}
 
-    }
-    }
+}
 
-
-void Chargement_Graphe()
+Graphe Chargement_Graphe()
 {
 
     set_color_depth(desktop_color_depth());
@@ -170,6 +150,6 @@ void Chargement_Graphe()
     A.afficher();
     A.Dessiner();
 
-
+return A;
 
 }

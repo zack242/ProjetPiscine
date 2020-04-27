@@ -152,6 +152,7 @@ Graphe Chargement_Graphe()
     A.Dessiner();
     A.calcul_indice_degres();
     A.afficher();
+    A.afficherindicedegre();
 
 return A;
 

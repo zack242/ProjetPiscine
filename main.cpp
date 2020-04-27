@@ -135,6 +135,7 @@ Graphe Chargement_Graphe()
     }
 
     BITMAP* page ;
+    int i;
     std::string fichier_topo;
     std::string fichier_ponde;
 

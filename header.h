@@ -68,6 +68,7 @@ public :
 
     void Dessiner(BITMAP* bmp)
     {
+
     const char *nom = m_nom.c_str();
     circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
     textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
@@ -78,6 +79,7 @@ public :
       line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
 
          }
+
 
     }
 

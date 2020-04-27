@@ -5,17 +5,7 @@ using namespace std;
 
 int main()
 {
-
-    allegro_init();
-    install_keyboard();
-    set_color_depth(desktop_color_depth());
-
-    if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0)!=0)
-    {
-        allegro_message("prb gfx mode");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
+ allegro_init();
 
 
     cout << "--Projet Theorie des graphes-- \n" << endl;
@@ -66,6 +56,15 @@ void menu()
 void Chargement_Graphe()
 {
 
+    set_color_depth(desktop_color_depth());
+
+    if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0)!=0)
+    {
+        allegro_message("prb gfx mode");
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+
     BITMAP* page ;
     std::string fichier_topo;
     std::string fichier_ponde;
@@ -75,8 +74,8 @@ void Chargement_Graphe()
     std::cout<<"Nom du fichier de ponderations : ";
   //  std::cin>>fichier_ponde;
     std::cout<<"\n Chargement du graphe avec "<<fichier_topo << "et" <<fichier_ponde<< " \n\n" ;
-   fichier_ponde="poids.txt";
-   fichier_topo="graphe.txt";
+     fichier_ponde="poids.txt"; /// A vire a la fin
+     fichier_topo="graphe.txt";
 
     Graphe A { fichier_topo,fichier_ponde };
     A.afficher();

@@ -60,10 +60,18 @@ Graphe* menu(Graphe* A)
 
       //  std::cin>>choix_indice ;
         std::cout<<"\n";
-        A->calcul_vecteur_propre();
-        A->calcul_vecteur_propre();
-        A->calcul_vecteur_propre();
-        A->calcul_vecteur_propre();
+
+ A->calcul_vecteur_propre();
+ A->calcul_vecteur_propre();
+ A->calcul_vecteur_propre();
+  A->calcul_vecteur_propre();
+ std::cout<<"------------\n";
+ // A->calcul_vecteur_propre();
+
+
+
+
+
 
         switch (choix_indice)
         {

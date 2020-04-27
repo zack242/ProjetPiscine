@@ -42,6 +42,9 @@ void menu()
         Chargement_Graphe();
         break;
 
+    case 3 :
+        menu2();
+
     case 99 :
 
         exit(0);
@@ -52,6 +55,92 @@ void menu()
 
 
 }
+
+void menu2()
+{
+    int choix ;
+
+
+    std::cout<<"            Menu indice \n\n";
+
+    std::cout<<"1/Calculer l'indice\n";
+    std::cout<<"2/Afficher l'indice\n";
+    std::cout<<"3/Sauvegarder l'indice\n";
+    std::cout<<"99/Exit\n\n ";
+    std::cout<<"Votre choix : " ;
+    std::cin>>choix ;
+    std::cout<<"\n";
+
+    switch (choix)
+    {
+
+    case 1 :
+
+        Calculer_indice();
+        break;
+
+    case 2:
+        Afficher_indice();
+        break;
+
+    case 3 :
+       Sauvegarder_indice();
+       break;
+
+    case 99 :
+        exit(0);
+        break;
+}
+
+void Calculer_indice()
+    {
+         int choix_indice ;
+
+
+    std::cout<<"            menu calcul indice \n\n";
+
+    std::cout<<"1/La centralite de degre \n";
+    std::cout<<"2/La centralite de vecteur propre \n";
+    std::cout<<"3/La centralite de proximite \n";
+    std::cout<<"4/La centralite d’intermediarite \n";
+    std::cout<<"99/Exit\n\n ";
+    std::cout<<"Votre choix : " ;
+    std::cin>>choix_indice ;
+    std::cout<<"\n";
+
+    switch (choix_indice)
+    {
+
+    case 1 :
+
+        centralite_degre();
+        break;
+
+    case 2 :
+
+        centralite_vecteur_propre();
+        break;
+
+    case 3 :
+
+        centralite_proximite();
+        break;
+
+    case 4 :
+
+        centralite_intermediarite();
+        break;
+
+
+
+    case 99 :
+
+        exit(0);
+        break;
+
+    }
+    }
+
 
 void Chargement_Graphe()
 {

@@ -248,9 +248,9 @@ public :
 };
 
 ///Proto
-Graphe menu(Graphe A);
+Graphe* menu(Graphe* A);
 
-Graphe Chargement_Graphe();
+Graphe* Chargement_Graphe();
 
 
 

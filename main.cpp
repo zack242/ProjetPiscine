@@ -6,18 +6,13 @@ using namespace std;
 int main()
 {
     allegro_init();
-    Graphe A{};
 
+Graphe* A{};
 
     cout << "--Projet Theorie des graphes-- \n" << endl;
 
-    while(!0)
-    {
-        A=menu(A);
-       // A.afficher();
-
-    }
-
+while(!0)
+       A=menu(A);
 
 
     return 0;
@@ -25,8 +20,9 @@ int main()
 }
 END_OF_MAIN();
 
-Graphe menu(Graphe A)
+Graphe* menu(Graphe* A)
 {
+
     int choix=0,choix_indice=0,choix_action=0 ;
 
 
@@ -69,8 +65,8 @@ Graphe menu(Graphe A)
         {
         case 1 : //Indice degres
 
-                A.calcul_indice_degres();
-                A.afficherindicedegre();
+                A->calcul_indice_degres();
+                A->afficherindicedegre();
                 break;
 
 
@@ -90,6 +86,7 @@ default :
 
     return A;
 
+
 }
 
 
@@ -97,9 +94,10 @@ default :
 
 
 
-Graphe Chargement_Graphe()
+Graphe* Chargement_Graphe()
 {
 
+Graphe* B{};
     set_color_depth(desktop_color_depth());
 
     if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0)!=0)
@@ -121,13 +119,11 @@ Graphe Chargement_Graphe()
     fichier_ponde="poids.txt"; /// A vire a la fin
     fichier_topo="graphe.txt";
     std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
+    B= new Graphe{fichier_topo,fichier_ponde};
 
+    B->Dessiner();
+    B->afficher();
 
-    Graphe A { fichier_topo,fichier_ponde };
-
-    A.Dessiner();
-    A.afficher();
-
-    return A;
+    return B;
 
 }

@@ -12,7 +12,10 @@
 void menu();
 void Chargement_Graphe();
 
-
+struct indice
+{
+    float degre_nn,degre_n;
+};
 
 
 class Sommet
@@ -22,12 +25,13 @@ private :
     int m_num;
     std::string m_nom;
     int m_x,m_y;
+    indice m_indice;
     ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
     std::map<const Sommet*,int> m_successeurs;
 
 public :
     /*constructeur*/
-    Sommet(int num,std::string nom,int x,int y):m_num{num},m_nom{nom},m_x{x},m_y{y} {};
+    Sommet(int num,std::string nom,int x,int y,indice a):m_num{num},m_nom{nom},m_x{x},m_y{y},m_indice{a} {};
 
     /*accesseurs*/
     int getNum()const
@@ -142,8 +146,10 @@ public :
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture des coords du sommet");
 
-
-            m_sommets.push_back( new Sommet{index,nom,x,y});
+            indice temp;
+            temp.degre_n=0;
+            temp.degre_nn=0;
+            m_sommets.push_back( new Sommet{index,nom,x,y,temp});
 
 
         }

@@ -90,11 +90,12 @@ void menu2(Graphe A)
         {
         case 1 :
            // A.calcul_indice_degres();
-           std::cout<<"okok";
+
             break;
 
         case 2 :
-             std::cout<<"okok";
+
+
             break ;
 
 

@@ -66,7 +66,7 @@ public :
     {
         std::cout<<"     sommet "<<m_nom<<"-"<<m_num<<" Coords : "<<m_x<<" ; "<<m_y<<" : ";
         for (auto s : m_successeurs)
-            std::cout<<s.first->getNum()<<" ("<<s.second<<") ";
+            std::cout<<s.first->getNum()<<" ("<<m_indice.degre_nomralise<<") ("<<m_indice.degre_non_normamise<<") ";
     }
 
 
@@ -87,8 +87,7 @@ public :
 
     }
 
-
-    void indice_degre(int ordre);
+    void indice_degre(float ordre);
 
 
 

@@ -78,9 +78,10 @@ void Chargement_Graphe()
      fichier_topo="graphe.txt";
 
     Graphe A { fichier_topo,fichier_ponde };
-    A.afficher();
+
     A.Dessiner();
     A.calcul_indice_degres();
+    A.afficher();
 
 
 

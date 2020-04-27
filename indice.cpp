@@ -1,7 +1,7 @@
 #include <iostream>
 #include "header.h"
 
-void Sommet::indice_degre(int ordre)
+void Sommet::indice_degre(float ordre)
 {
 int nbrsucc=0;
 for( auto s : m_successeurs)
@@ -11,9 +11,10 @@ for( auto s : m_successeurs)
 
     }
 
+m_indice.degre_non_normamise=nbrsucc;
+m_indice.degre_nomralise=(nbrsucc/ordre);
 
-
-
+std::cout<<"-----------"<<m_indice.degre_non_normamise;
 }
 
 void Graphe::calcul_indice_degres()

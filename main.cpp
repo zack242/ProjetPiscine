@@ -51,7 +51,7 @@ Graphe menu(Graphe A)
         break;
 
     case 3 :
-    {
+
 
 
         std::cout<<"           Choix indice \n\n";
@@ -65,54 +65,27 @@ Graphe menu(Graphe A)
         std::cin>>choix_indice ;
         std::cout<<"\n";
 
-        std::cout<<"            Que faire ? \n\n";
-
-        std::cout<<"1/Calculer et Afficher l'indice\n";
-        std::cout<<"3/Sauvegarder l'indice\n";
-        std::cout<<"7/Revenir au menu\n\n ";
-        std::cout<<"Votre choix : " ;
-
-        std::cin>>choix_action ;
-        std::cout<<"\n";
-
-
-
         switch (choix_indice)
         {
-
         case 1 : //Indice degres
-        {
-
-            switch(choix_action)
-            {
-            case 1 :
 
                 A.calcul_indice_degres();
                 A.afficherindicedegre();
                 break;
 
-            case 2 :
-                A.afficherindicedegre();
-            default :
-                break;
 
-           }
-
-        }
-        break;
-
-        default :
+         default :
             break ;
 
 
         }
 
-    }
-
-    default :
+default :
         break ;
-
     }
+
+
+
 
 
     return A;

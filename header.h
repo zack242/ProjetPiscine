@@ -84,6 +84,8 @@ public :
     }
 
 
+    void indice_degre(int ordre);
+
 
 
 };
@@ -218,6 +220,14 @@ public :
 
 
     }
+
+    void calcul_indice_degres() ;
+
+
+
+
+
+
 
 };
 

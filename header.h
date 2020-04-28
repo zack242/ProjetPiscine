@@ -9,6 +9,7 @@
 #include <algorithm>
 
 
+
 struct indice
 {
     float degre_non_normamise,degre_nomralise;
@@ -19,11 +20,11 @@ class Sommet
 {
 
 private :
-
+    std::string m_nom;
     int m_num;
     int m_x,m_y;
     indice m_indice; ///Struct stockant les indices
-    std::string m_nom;
+
 
     std::map<const Sommet*,int> m_successeurs; ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
     int  m_couleur;
@@ -124,16 +125,13 @@ public :
     }
 
 
-    void sauvgarderindice() const
+    void sauvgarderindice(std::ofstream &ofs) const
     {
 
-        std::fstream ofs("indice.txt");
-        ofs.seekp(0,std::ios::end);
-
-
+       // ofs.seekp(0,std::ios::end); Initule en mode automatique
         ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
+       // ofs.close(); ///Inutilse en mode automatique
 
-        ofs.close();
     }
 
 ///Proto
@@ -299,16 +297,39 @@ public :
 
     }
 
-    void sauvgarder() const
+    void sauvgarder(int choix) const
     {
-        std::ofstream ofs{"indice.txt"};
-        for (auto s : m_sommets)
+
+        std::string nomFichier;
+
+        switch (choix) ///Automatisation de la sauvgarde
         {
-            s->sauvgarderindice();
+        case 1 :
+            nomFichier="indice_degre.txt";
+            break ;
+
+        case 2 :
+            nomFichier="indice_vecteur.txt";
+            break ;
+
+        case 3 :
+            nomFichier="indice_proximite.txt";
+            break ;
+
+        case 4 :
+            nomFichier="indice_intermediaire.txt";
+            break ;
+        }
+
+        std::ofstream ofs{nomFichier};
+
+         for (auto s : m_sommets)
+        {
+            s->sauvgarderindice(ofs);
 
         }
 
-        std::cout<<"\n ----Sauvgarde reussi----"<<std::endl;
+        std::cout<<"\n ----Sauvgarde reussi dans "<<nomFichier<<" ----"<<std::endl;
 
     }
 

@@ -79,7 +79,7 @@ Graphe* menu(Graphe* A)
             A->affi_indice_Tdegre();
             A->Visualisation_indice(choix_indice);
             A->Dessiner();
-            A->sauvgarder();
+            A->sauvgarder(choix_indice);
 
 
             break;

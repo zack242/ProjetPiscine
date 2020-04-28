@@ -19,20 +19,21 @@ class Sommet
 {
 
 private :
+
     int m_num;
-    std::string m_nom;
     int m_x,m_y;
-    indice m_indice;
-    ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
-    std::map<const Sommet*,int> m_successeurs;
+    indice m_indice; ///Struct stockant les indices
+    std::string m_nom;
+
+    std::map<const Sommet*,int> m_successeurs; ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
     int  m_couleur;
 
 public :
+
     /*constructeur*/
     Sommet(int num,std::string nom,int x,int y,indice a):m_num{num},m_nom{nom},m_x{x},m_y{y},m_indice{a}
     {
         m_couleur=0;
-
     };
 
     /*accesseurs*/
@@ -40,6 +41,7 @@ public :
     {
         return m_num;
     }
+
     int getX()const
     {
         return m_x;
@@ -50,14 +52,6 @@ public :
         return m_y;
     }
 
-    void setColor(int couleur)
-    {
-
-        m_couleur=couleur;
-
-
-    }
-
     int getColor()
     {
 
@@ -65,10 +59,29 @@ public :
 
     }
 
-    float getIndice()
+
+    float getIndice(int choix)
     {
+       switch(choix)
+       {
+       case 1 :
+        return m_indice.degre_nomralise;
+
+       case 2 :
         return m_indice.degre_non_normamise;
+
+
+       }
+
     }
+
+
+    void setColor(int couleur)
+    {
+        m_couleur=couleur;
+
+    }
+
 
     ///accesseur : pour la liste des successeurs
     const std::map<const Sommet*,int>& getSuccesseurs()const
@@ -90,26 +103,19 @@ public :
         for (auto s : m_successeurs)
             std::cout<<s.first->getNum()<<" ";
     }
-    void afficherindicedegre() const
-    {
-        std::cout<<" sommet : "<<m_nom<< std::endl;
-        std::cout<<"indice de degre normalise : "<<m_indice.degre_nomralise<<" , \n"<<"indice de degre nonnormalise : "<<m_indice.degre_non_normamise<<" .";
 
-    }
-
-    void indice_degre(float ordre);
 
 
     void Dessiner(BITMAP* bmp,int couleur)
     {
-
         const char *nom = m_nom.c_str();
-        circlefill(bmp,m_x*100,m_y*100,30,makecol(m_couleur,0,0));
-        circlefill(bmp,m_x*100,m_y*100,3,makecol(255,255,255));
+
+        circlefill(bmp,m_x*100,m_y*100,30,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
+        circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
 
         textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
 
-        for (auto s : m_successeurs)
+        for (auto s : m_successeurs) ///Dessin des Arcs
         {
             line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
 
@@ -117,6 +123,11 @@ public :
 
 
     }
+
+///Proto
+
+    void indice_degre(float ordre);
+    void  affi_degre_sommmet() const  ;
 
 
 };
@@ -126,25 +137,22 @@ public :
 class Graphe
 {
 
-
-
 private :
 
     ///liste des sommets (vecteur de pointeurs sur Sommet)
     std::vector<Sommet*> m_sommets;
     int m_orientation;
 
+
 public :
-    /* La construction du réseau peut se faire à partir d'un fichier
-     dont le nom est passé en paramètre
-    */
-    Graphe() {};
+
+    Graphe() {}; // Constructeur
 
 
-    Graphe(std::string fichier_topo,std::string fichier_ponde )
+    Graphe(std::string fichier_topo,std::string fichier_ponde) //Constructeur a partir de fichier
     {
 
-        std::ifstream ifs{fichier_topo};
+        std::ifstream ifs{fichier_topo}; ///Ouverture des flux
         std::ifstream ifp{fichier_ponde};
 
         if (!ifs)
@@ -157,7 +165,7 @@ public :
 
         int ordre;
         ifs >> ordre;
-        std::cout<<ordre;
+
         if ( ifs.fail() )
             throw std::runtime_error("Probleme lecture ordre du graphe");
 
@@ -178,12 +186,10 @@ public :
             ifs >> x>>y;
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture des coords du sommet");
-
             indice temp;
             temp.degre_non_normamise=0;
             temp.degre_nomralise=0;
             m_sommets.push_back( new Sommet{index,nom,x,y,temp});
-
 
         }
 
@@ -212,44 +218,10 @@ public :
 
         }
 
-    }
-
-    void Dessinerindice()
-    {
-        calcul_indice_degres();
-        std::vector<float> valeurindice;
-
-        for( auto s : m_sommets)
-            valeurindice.push_back(s->getIndice());
-
-        std::sort(valeurindice.begin(),valeurindice.end());
+        ///Partie Initialisation
 
 
 
-
-        for(auto k : m_sommets)
-        {
-
-            // std::cout<<"Indice :"<<valeurindice[i]<<std::endl;
-            for(int i =0 ; i<valeurindice.size(); i++)
-            {
-                if(valeurindice[i]==k->getIndice())
-                {
-
-                    if(k->getColor()==0)
-                    {
-                        std::cout<<k->getColor();
-                        k->setColor(255-20*i);
-                        std::cout<<255-5*i<<"----"<<k->getColor()<<std::endl;
-
-                    }
-                }
-
-
-            }
-
-
-        }
 
     }
 
@@ -278,19 +250,24 @@ public :
             s->afficher();
             std::cout<<std::endl;
         }
-    }
-
-    void afficherindicedegre() const
-    {
-        for (auto s : m_sommets)
-        {
-            s->afficherindicedegre();
-            std::cout<<std::endl;
-        }
 
     }
+
+
+
     void Dessiner()
     {
+
+ set_color_depth(desktop_color_depth()); /// Setup allegro
+  install_keyboard();
+
+    if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0)!=0)
+    {
+        allegro_message("prb gfx mode");
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+
 
         BITMAP* page ;
         int i=0;
@@ -305,13 +282,14 @@ public :
 
         blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
 
+        ///Proto des methodes
+
 
     }
 
     void calcul_indice_degres() ;
-
-
-
+    void Visualisation_indice(int i);
+    void affi_indice_Tdegre() const ;
 };
 
 ///Proto

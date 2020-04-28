@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    allegro_init();
+allegro_init();
 
     Graphe* A{};
 
@@ -19,6 +19,8 @@ int main()
 
 }
 END_OF_MAIN();
+
+
 
 Graphe* menu(Graphe* A)
 {
@@ -42,12 +44,17 @@ Graphe* menu(Graphe* A)
     switch (choix)
     {
 
-    case 1 :
+    case 1 : ///Chargement du graphe
+
         A=Chargement_Graphe();
+
         break;
 
-    case 3 :
+    case 2 : ///Chargement du systeme de ponderation
 
+
+
+    case 3 : /// Calculer , afficher , Saivgarder
 
 
         std::cout<<"           Choix indice \n\n";
@@ -61,28 +68,47 @@ Graphe* menu(Graphe* A)
         std::cin>>choix_indice ;
         std::cout<<"\n";
 
+
         switch (choix_indice)
         {
-        case 1 : //Indice degres
+
+        case 1 : /// Indice degres normalise et non
 
             A->calcul_indice_degres();
-            A->afficherindicedegre();
+            A->affi_indice_Tdegre();
+            A->Visualisation_indice(choix_indice);
+            A->Dessiner();
+
+
             break;
+
+        case 2 : /// Indice centralite de degres propre
+
+
+            break ;
+
+        case 3 : /// Indice de proximite
+
+
+            break;
+
+        case 4 : ///Centralite d'intermediaire
+
 
 
         default :
+
             break ;
 
 
         }
 
     default :
+
         break ;
     }
 
-
     return A;
-
 
 }
 
@@ -91,18 +117,10 @@ Graphe* menu(Graphe* A)
 
 
 
-Graphe* Chargement_Graphe()
+Graphe* Chargement_Graphe() ///SS Chargement d'un graphe depuis fichier
 {
 
     Graphe* B{};
-    set_color_depth(desktop_color_depth());
-
-    if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0)!=0)
-    {
-        allegro_message("prb gfx mode");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
 
     BITMAP* page ;
     int i;
@@ -113,15 +131,16 @@ Graphe* Chargement_Graphe()
     // std::cin>>fichier_topo;
     std::cout<<"Nom du fichier de ponderations : ";
     //  std::cin>>fichier_ponde;
+
     fichier_ponde="poids.txt"; /// A vire a la fin
     fichier_topo="graphe.txt";
-    std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
-    B= new Graphe{fichier_topo,fichier_ponde};
 
-    B->Dessinerindice();
+    std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
+
+    B=new Graphe{fichier_topo,fichier_ponde}; /// Allocation du graphe
+
     B->Dessiner();
     B->afficher();
-
 
     return B;
 

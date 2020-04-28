@@ -6,8 +6,7 @@
 #include <fstream>
 #include <allegro.h>
 #include <stdio.h>
-
-
+#include <algorithm>
 
 
 struct indice
@@ -26,36 +25,49 @@ private :
     indice m_indice;
     ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
     std::map<const Sommet*,int> m_successeurs;
-    int m_couleur;
+    int  m_couleur;
 
 public :
     /*constructeur*/
-    Sommet(int num,std::string nom,int x,int y,indice a):m_num{num},m_nom{nom},m_x{x},m_y{y},m_indice{a} {};
+    Sommet(int num,std::string nom,int x,int y,indice a):m_num{num},m_nom{nom},m_x{x},m_y{y},m_indice{a}
+    {
+        m_couleur=0;
+
+    };
 
     /*accesseurs*/
     int getNum()const
     {
         return m_num;
     }
-     int getX()const
+    int getX()const
     {
         return m_x;
     }
 
-      int getY()const
+    int getY()const
     {
         return m_y;
     }
 
-    indice get_indice()
+    void setColor(int couleur)
     {
 
-        return m_indice;
+        m_couleur=couleur;
+
+
     }
 
-    int get_couleur()
+    int getColor()
     {
+
         return m_couleur;
+
+    }
+
+    float getIndice()
+    {
+        return m_indice.degre_non_normamise;
     }
 
     ///accesseur : pour la liste des successeurs
@@ -65,7 +77,7 @@ public :
     }
 
     /* pour ajouter un successeur à la liste*/
-   void ajouterSucc(const Sommet*s,int poids)
+    void ajouterSucc(const Sommet*s,int poids)
     {
         m_successeurs[s]=poids;
     }
@@ -90,25 +102,21 @@ public :
 
     void Dessiner(BITMAP* bmp,int couleur)
     {
-    couleur=0;
-    const char *nom = m_nom.c_str();
-    circlefill(bmp,m_x*100,m_y*100,3,makecol(couleur,0,0));
-    textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
 
-    for (auto s : m_successeurs)
+        const char *nom = m_nom.c_str();
+        circlefill(bmp,m_x*100,m_y*100,30,makecol(m_couleur,0,0));
+        circlefill(bmp,m_x*100,m_y*100,3,makecol(255,255,255));
+
+        textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
+
+        for (auto s : m_successeurs)
         {
+            line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
 
-      line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
-
-         }
+        }
 
 
     }
-
-
-
-
-
 
 
 };
@@ -130,7 +138,7 @@ public :
     /* La construction du réseau peut se faire à partir d'un fichier
      dont le nom est passé en paramètre
     */
-    Graphe(){};
+    Graphe() {};
 
 
     Graphe(std::string fichier_topo,std::string fichier_ponde )
@@ -161,7 +169,7 @@ public :
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture de l'index du sommet");
 
-                 std::string nom ;
+            std::string nom ;
             ifs >> nom ;
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture du nom du sommet");
@@ -201,70 +209,51 @@ public :
             if(!m_orientation)
                 m_sommets[num2]->ajouterSucc(m_sommets[num1],poids);
 
-        }
-
-
-        std::vector<indice> temp;
-        float maximum=0;
-        float minimum=666;
-        int couleur;
-        int nvx_couleur;
-        int color;
-    BITMAP* page ;
-    page=create_bitmap(SCREEN_W,SCREEN_H);
-
-
-
-
-        for(int i=0; i<m_sommets.size(); ++i)
-        {
-            float chiffre;
-            temp[i]=m_sommets[i]->get_indice();
-            chiffre=temp[i].degre_non_normamise;
-
-
-
-            if(chiffre>maximum)
-            {
-                maximum=chiffre;
-            }
-            else if(chiffre<minimum)
-            {
-                minimum=chiffre;
-            }
 
         }
-
-          for(int i=0; i<m_sommets.size(); ++i)
-          {
-            float chiffre;
-            chiffre=temp[i].degre_non_normamise;
-
-             //color=m_sommets[i]->get_couleur();
-
-              if(chiffre==maximum)
-              {
-                  nvx_couleur=255;
-                 // m_sommets[i]->m_couleur=nvx_couleur;
-                m_sommets[i]->Dessiner(page,couleur);
-              }
-              else if(chiffre ==minimum)
-              {
-                  couleur=125;
-                  m_sommets[i]->Dessiner(page,couleur);
-
-              }
-              else
-              {
-                  couleur=0;
-                   m_sommets[i]->Dessiner(page,couleur);
-              }
-
-          }
-
-
 
     }
+
+    void Dessinerindice()
+    {
+        calcul_indice_degres();
+        std::vector<float> valeurindice;
+
+        for( auto s : m_sommets)
+            valeurindice.push_back(s->getIndice());
+
+        std::sort(valeurindice.begin(),valeurindice.end());
+
+
+
+
+        for(auto k : m_sommets)
+        {
+
+            // std::cout<<"Indice :"<<valeurindice[i]<<std::endl;
+            for(int i =0 ; i<valeurindice.size(); i++)
+            {
+                if(valeurindice[i]==k->getIndice())
+                {
+
+                    if(k->getColor()==0)
+                    {
+                        std::cout<<k->getColor();
+                        k->setColor(255-20*i);
+                        std::cout<<255-5*i<<"----"<<k->getColor()<<std::endl;
+
+                    }
+                }
+
+
+            }
+
+
+        }
+
+    }
+
+
 
     /*destructeur*/
     ~Graphe()
@@ -303,18 +292,18 @@ public :
     void Dessiner()
     {
 
-    BITMAP* page ;
-    int i=0;
-    page=create_bitmap(SCREEN_W,SCREEN_H);
-    clear_to_color(page,makecol(255,255,255));
+        BITMAP* page ;
+        int i=0;
+        page=create_bitmap(SCREEN_W,SCREEN_H);
+        clear_to_color(page,makecol(255,255,255));
 
-   for (auto s : m_sommets)
+        for (auto s : m_sommets)
         {
             s->Dessiner(page, i);
 
         }
 
-    blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
 
 
     }

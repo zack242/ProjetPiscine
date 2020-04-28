@@ -7,12 +7,12 @@ int main()
 {
     allegro_init();
 
-Graphe* A{};
+    Graphe* A{};
 
     cout << "--Projet Theorie des graphes-- \n" << endl;
 
-while(!0)
-       A=menu(A);
+    while(!0)
+        A=menu(A);
 
 
     return 0;
@@ -65,23 +65,20 @@ Graphe* menu(Graphe* A)
         {
         case 1 : //Indice degres
 
-                A->calcul_indice_degres();
-                A->afficherindicedegre();
-                break;
+            A->calcul_indice_degres();
+            A->afficherindicedegre();
+            break;
 
 
-         default :
+        default :
             break ;
 
 
         }
 
-default :
+    default :
         break ;
     }
-
-
-
 
 
     return A;
@@ -97,7 +94,7 @@ default :
 Graphe* Chargement_Graphe()
 {
 
-Graphe* B{};
+    Graphe* B{};
     set_color_depth(desktop_color_depth());
 
     if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0)!=0)
@@ -121,8 +118,10 @@ Graphe* B{};
     std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
     B= new Graphe{fichier_topo,fichier_ponde};
 
+    B->Dessinerindice();
     B->Dessiner();
     B->afficher();
+
 
     return B;
 

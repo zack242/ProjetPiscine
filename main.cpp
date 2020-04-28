@@ -11,8 +11,11 @@ Graphe* A{};
 
     cout << "--Projet Theorie des graphes-- \n" << endl;
 
-while(!0)
-       A=menu(A);
+        A=Chargement_Graphe();
+        A->Dijkstra(0,3);
+
+/*while(!0)
+       A=menu(A);*/
 
 
     return 0;

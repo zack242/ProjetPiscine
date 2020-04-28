@@ -6,7 +6,9 @@
 #include <fstream>
 #include <allegro.h>
 #include <stdio.h>
-
+#include <queue>
+#include <string>
+#include <limits>
 
 
 
@@ -265,7 +267,7 @@ public :
 
     void calcul_indice_degres() ;
 
-
+void Dijkstra(int num_s0, int num_sf)const;
 
 };
 

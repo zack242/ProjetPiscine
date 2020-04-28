@@ -62,10 +62,21 @@ Graphe* menu(Graphe* A)
         std::cout<<"\n";
 
  A->calcul_vecteur_propre();
- A->calcul_vecteur_propre();
- A->calcul_vecteur_propre();
-  A->calcul_vecteur_propre();
  std::cout<<"------------\n";
+ A->calcul_vecteur_propre();
+ std::cout<<"------------\n";
+ A->calcul_vecteur_propre();
+ std::cout<<"------------\n";
+A->calcul_vecteur_propre();
+A->calcul_vecteur_propre();
+ std::cout<<"------------\n";
+ A->calcul_vecteur_propre();
+ std::cout<<"------------\n";
+ A->calcul_vecteur_propre();
+ std::cout<<"------------\n";
+A->calcul_vecteur_propre();
+
+
  // A->calcul_vecteur_propre();
 
 

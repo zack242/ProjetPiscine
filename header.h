@@ -9,6 +9,7 @@
 #include <queue>
 #include <string>
 #include <limits>
+#include <algorithm>
 
 
 
@@ -22,22 +23,29 @@ class Sommet
 {
 
 private :
+
     int m_num;
-    std::string m_nom;
     int m_x,m_y;
-    indice m_indice;
-    ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
-    std::map<const Sommet*,int> m_successeurs;
+    indice m_indice; ///Struct stockant les indices
+    std::string m_nom;
+
+    std::map<const Sommet*,int> m_successeurs; ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
+    int  m_couleur;
 
 public :
+
     /*constructeur*/
-    Sommet(int num,std::string nom,int x,int y,indice a):m_num{num},m_nom{nom},m_x{x},m_y{y},m_indice{a} {};
+    Sommet(int num,std::string nom,int x,int y,indice a):m_num{num},m_nom{nom},m_x{x},m_y{y},m_indice{a}
+    {
+        m_couleur=0;
+    };
 
     /*accesseurs*/
     int getNum()const
     {
         return m_num;
     }
+
     int getX()const
     {
         return m_x;
@@ -47,6 +55,37 @@ public :
     {
         return m_y;
     }
+
+    int getColor()
+    {
+
+        return m_couleur;
+
+    }
+
+
+    float getIndice(int choix)
+    {
+        switch(choix)
+        {
+        case 1 :
+            return m_indice.degre_nomralise;
+
+        case 2 :
+            return m_indice.degre_non_normamise;
+
+
+        }
+
+    }
+
+
+    void setColor(int couleur)
+    {
+        m_couleur=couleur;
+
+    }
+
 
     ///accesseur : pour la liste des successeurs
     const std::map<const Sommet*,int>& getSuccesseurs()const
@@ -68,33 +107,32 @@ public :
         for (auto s : m_successeurs)
             std::cout<<s.first->getNum()<<" ";
     }
-    void afficherindicedegre() const
-    {
-        std::cout<<" sommet : "<<m_nom<< std::endl;
-        std::cout<<"indice de degre normalise : "<<m_indice.degre_nomralise<<" , \n"<<"indice de degre nonnormalise : "<<m_indice.degre_non_normamise<<" .";
 
-    }
+
 
     void Dessiner(BITMAP* bmp)
     {
-
         const char *nom = m_nom.c_str();
+
+        circlefill(bmp,m_x*100,m_y*100,30,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
         circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
+
         textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
 
-        for (auto s : m_successeurs)
+        for (auto s : m_successeurs) ///Dessin des Arcs
         {
-
             line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
 
         }
 
-
     }
+
+
     void sauvgarderindice() const
     {
-std::fstream ofs("indice.txt");
-ofs.seekp(0,std::ios::end);
+
+        std::fstream ofs("indice.txt");
+        ofs.seekp(0,std::ios::end);
 
 
         ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
@@ -102,8 +140,10 @@ ofs.seekp(0,std::ios::end);
         ofs.close();
     }
 
-    void indice_degre(float ordre);
+///Proto
 
+    void indice_degre(float ordre);
+    void  affi_degre_sommmet() const  ;
 
 
 };
@@ -113,25 +153,21 @@ ofs.seekp(0,std::ios::end);
 class Graphe
 {
 
-
-
 private :
 
     ///liste des sommets (vecteur de pointeurs sur Sommet)
     std::vector<Sommet*> m_sommets;
     int m_orientation;
 
+
 public :
-    /* La construction du réseau peut se faire à partir d'un fichier
-     dont le nom est passé en paramètre
-    */
-    Graphe() {};
 
+    Graphe() {}; // Constructeur
 
-    Graphe(std::string fichier_topo,std::string fichier_ponde )
+    Graphe(std::string fichier_topo,std::string fichier_ponde) //Constructeur a partir de fichier
     {
 
-        std::ifstream ifs{fichier_topo};
+        std::ifstream ifs{fichier_topo}; ///Ouverture des flux
         std::ifstream ifp{fichier_ponde};
 
         if (!ifs)
@@ -144,7 +180,7 @@ public :
 
         int ordre;
         ifs >> ordre;
-        std::cout<<ordre;
+
         if ( ifs.fail() )
             throw std::runtime_error("Probleme lecture ordre du graphe");
 
@@ -165,12 +201,10 @@ public :
             ifs >> x>>y;
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture des coords du sommet");
-
             indice temp;
             temp.degre_non_normamise=0;
             temp.degre_nomralise=0;
             m_sommets.push_back( new Sommet{index,nom,x,y,temp});
-
 
         }
 
@@ -196,10 +230,17 @@ public :
             if(!m_orientation)
                 m_sommets[num2]->ajouterSucc(m_sommets[num1],poids);
 
+
         }
+
+        ///Partie Initialisation
+
+
 
 
     }
+
+
 
     /*destructeur*/
     ~Graphe()
@@ -224,23 +265,29 @@ public :
             s->afficher();
             std::cout<<std::endl;
         }
-    }
-
-    void afficherindicedegre() const
-    {
-        for (auto s : m_sommets)
-        {
-            s->afficherindicedegre();
-            std::cout<<std::endl;
-        }
 
     }
+
+
+
     void Dessiner()
     {
 
+        set_color_depth(desktop_color_depth()); /// Setup allegro
         BITMAP* page ;
+        install_keyboard();
+
+        if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0)!=0)
+        {
+            allegro_message("prb gfx mode");
+            allegro_exit();
+            exit(EXIT_FAILURE);
+        }
+
+
         page=create_bitmap(SCREEN_W,SCREEN_H);
         clear_to_color(page,makecol(255,255,255));
+
 
         for (auto s : m_sommets)
         {
@@ -251,23 +298,31 @@ public :
         blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
 
 
+        ///Proto des methodes
+
+
     }
+
     void sauvgarder() const
     {
         std::ofstream ofs{"indice.txt"};
-            for (auto s : m_sommets)
+        for (auto s : m_sommets)
         {
             s->sauvgarderindice();
 
         }
 
-        std::cout<<"sauvgarde reussi"<<std::endl;
+        std::cout<<"\n ----Sauvgarde reussi----"<<std::endl;
 
     }
 
     void calcul_indice_degres() ;
 
+
 void Dijkstra(int num_s0, int num_sf)const;
+
+    void Visualisation_indice(int i);
+    void affi_indice_Tdegre() const ;
 
 };
 

@@ -26,6 +26,7 @@ private :
     indice m_indice;
     ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
     std::map<const Sommet*,int> m_successeurs;
+    int m_couleur;
 
 public :
     /*constructeur*/
@@ -44,6 +45,17 @@ public :
       int getY()const
     {
         return m_y;
+    }
+
+    indice get_indice()
+    {
+
+        return m_indice;
+    }
+
+    int get_couleur()
+    {
+        return m_couleur;
     }
 
     ///accesseur : pour la liste des successeurs
@@ -73,11 +85,14 @@ public :
 
     }
 
-    void Dessiner(BITMAP* bmp)
-    {
+    void indice_degre(float ordre);
 
+
+    void Dessiner(BITMAP* bmp,int couleur)
+    {
+    couleur=0;
     const char *nom = m_nom.c_str();
-    circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
+    circlefill(bmp,m_x*100,m_y*100,3,makecol(couleur,0,0));
     textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
 
     for (auto s : m_successeurs)
@@ -90,7 +105,9 @@ public :
 
     }
 
-    void indice_degre(float ordre);
+
+
+
 
 
 
@@ -187,6 +204,66 @@ public :
         }
 
 
+        std::vector<indice> temp;
+        float maximum=0;
+        float minimum=666;
+        int couleur;
+        int nvx_couleur;
+        int color;
+    BITMAP* page ;
+    page=create_bitmap(SCREEN_W,SCREEN_H);
+
+
+
+
+        for(int i=0; i<m_sommets.size(); ++i)
+        {
+            float chiffre;
+            temp[i]=m_sommets[i]->get_indice();
+            chiffre=temp[i].degre_non_normamise;
+
+
+
+            if(chiffre>maximum)
+            {
+                maximum=chiffre;
+            }
+            else if(chiffre<minimum)
+            {
+                minimum=chiffre;
+            }
+
+        }
+
+          for(int i=0; i<m_sommets.size(); ++i)
+          {
+            float chiffre;
+            chiffre=temp[i].degre_non_normamise;
+
+             //color=m_sommets[i]->get_couleur();
+
+              if(chiffre==maximum)
+              {
+                  nvx_couleur=255;
+                 // m_sommets[i]->m_couleur=nvx_couleur;
+                m_sommets[i]->Dessiner(page,couleur);
+              }
+              else if(chiffre ==minimum)
+              {
+                  couleur=125;
+                  m_sommets[i]->Dessiner(page,couleur);
+
+              }
+              else
+              {
+                  couleur=0;
+                   m_sommets[i]->Dessiner(page,couleur);
+              }
+
+          }
+
+
+
     }
 
     /*destructeur*/
@@ -227,12 +304,13 @@ public :
     {
 
     BITMAP* page ;
+    int i=0;
     page=create_bitmap(SCREEN_W,SCREEN_H);
     clear_to_color(page,makecol(255,255,255));
 
    for (auto s : m_sommets)
         {
-            s->Dessiner(page);
+            s->Dessiner(page, i);
 
         }
 

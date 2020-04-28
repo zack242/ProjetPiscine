@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-allegro_init();
+    allegro_init();
 
     Graphe* A{};
 
@@ -72,17 +72,24 @@ Graphe* menu(Graphe* A)
         switch (choix_indice)
         {
 
+
         case 1 : /// Indice degres normalise et non
 
             A->calcul_indice_degres();
             A->affi_indice_Tdegre();
             A->Visualisation_indice(choix_indice);
             A->Dessiner();
+            A->sauvgarder();
 
 
             break;
 
         case 2 : /// Indice centralite de degres propre
+
+
+
+            break;
+
 
 
             break ;
@@ -93,6 +100,9 @@ Graphe* menu(Graphe* A)
             break;
 
         case 4 : ///Centralite d'intermediaire
+
+
+            break;
 
 
 

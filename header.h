@@ -62,16 +62,16 @@ public :
 
     float getIndice(int choix)
     {
-       switch(choix)
-       {
-       case 1 :
-        return m_indice.degre_nomralise;
+        switch(choix)
+        {
+        case 1 :
+            return m_indice.degre_nomralise;
 
-       case 2 :
-        return m_indice.degre_non_normamise;
+        case 2 :
+            return m_indice.degre_non_normamise;
 
 
-       }
+        }
 
     }
 
@@ -106,7 +106,7 @@ public :
 
 
 
-    void Dessiner(BITMAP* bmp,int couleur)
+    void Dessiner(BITMAP* bmp)
     {
         const char *nom = m_nom.c_str();
 
@@ -121,7 +121,19 @@ public :
 
         }
 
+    }
 
+
+    void sauvgarderindice() const
+    {
+
+        std::fstream ofs("indice.txt");
+        ofs.seekp(0,std::ios::end);
+
+
+        ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
+
+        ofs.close();
     }
 
 ///Proto
@@ -147,7 +159,6 @@ private :
 public :
 
     Graphe() {}; // Constructeur
-
 
     Graphe(std::string fichier_topo,std::string fichier_ponde) //Constructeur a partir de fichier
     {
@@ -258,32 +269,46 @@ public :
     void Dessiner()
     {
 
- set_color_depth(desktop_color_depth()); /// Setup allegro
-  install_keyboard();
-
-    if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0)!=0)
-    {
-        allegro_message("prb gfx mode");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
-
-
+        set_color_depth(desktop_color_depth()); /// Setup allegro
         BITMAP* page ;
-        int i=0;
+        install_keyboard();
+
+        if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0)!=0)
+        {
+            allegro_message("prb gfx mode");
+            allegro_exit();
+            exit(EXIT_FAILURE);
+        }
+
+
         page=create_bitmap(SCREEN_W,SCREEN_H);
         clear_to_color(page,makecol(255,255,255));
 
+
         for (auto s : m_sommets)
         {
-            s->Dessiner(page, i);
+            s->Dessiner(page);
 
         }
 
         blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
 
+
         ///Proto des methodes
 
+
+    }
+
+    void sauvgarder() const
+    {
+        std::ofstream ofs{"indice.txt"};
+        for (auto s : m_sommets)
+        {
+            s->sauvgarderindice();
+
+        }
+
+        std::cout<<"\n ----Sauvgarde reussi----"<<std::endl;
 
     }
 

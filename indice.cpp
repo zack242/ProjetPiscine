@@ -49,17 +49,6 @@ float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[10][10],
 
         }
 
-
-       /* printf("\t\t\t**  Affichage de la matrice  **\n\n\n");
-
-        for(int i=0; i<taille; i++)
-        {
-            for(int j=0; j<taille; j++)
-            {
-                printf("\t%.2f",ca[i][j]);
-            }
-            printf("\n\n");
-        }*/
     }
     nbtotal=ca[sum_1][sum_2];
     return nbtotal;
@@ -205,10 +194,8 @@ void Graphe::centraliteintermediarite(int num_s0, int num_sf)const
                             tempik=tempik-1;
                             float temp=(tempji+tempik)/tempjk;
                             indice_nn=indice_nn+temp;
-                            std::cout<<"id:"<<i<<" , "<<j<<" , "<<k<<" :"<< matricedist[j][i]<<" + "<<matricedist[i][k]<<" = "<<matricedist[j][k]<<std::endl;
-                            std::cout<<"test2 "<<i<<" : "<<temp<<" : "<<tempji<<" : "<<tempik<<" : "<<tempjk<<std::endl;
-
-
+                            //std::cout<<"id:"<<i<<" , "<<j<<" , "<<k<<" :"<< matricedist[j][i]<<" + "<<matricedist[i][k]<<" = "<<matricedist[j][k]<<std::endl;
+                           // std::cout<<"test2 "<<i<<" : "<<temp<<" : "<<tempji<<" : "<<tempik<<" : "<<tempjk<<std::endl;
                         }
                         else
                         {
@@ -230,8 +217,7 @@ void Graphe::centraliteintermediarite(int num_s0, int num_sf)const
     {
         std::cout<<"sommet " << i << " indice: "<<tempindice[i]<<std::endl;
     }
-    //nbtotal=nbtopluscourtchemin(1,4,taille,matrice);
-    //std::cout <<nbtotal<< std::endl;
+
 }
 
 

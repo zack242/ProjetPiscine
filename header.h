@@ -236,16 +236,26 @@ public :
 
         }
 
-        int taille;
-        ifs >> taille;
-        ifp >> taille;
+        int taille_topo;
+        int taille_pondo;
+
+        ifs >> taille_topo;
+        ifp >> taille_pondo;
+
+        if(taille_pondo!=taille_topo)
+            {
+            std::cout<<"Erreur  taille  ";
+            exit(0);
+
+            }
+
         if ( ifs.fail() )
             throw std::runtime_error("Probleme lecture taille du graphe");
 
         int num1,num2,index,poids;
 
 
-        for (int i=0; i<taille; ++i)
+        for (int i=0; i<taille_topo; ++i)
         {
             ifs>>index>>num1>>num2;
             ifp>>index>>poids;

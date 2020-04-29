@@ -11,8 +11,9 @@ int main()
 
     cout << "--Projet Theorie des graphes-- \n" << endl;
 
-        A=Chargement_Graphe();
-        A->Dijkstra(0,3);
+      A=Chargement_Graphe();
+        A->centraliteintermediarite(1,4);
+
 
 /*while(!0)
        A=menu(A);*/
@@ -146,8 +147,8 @@ Graphe* Chargement_Graphe() ///SS Chargement d'un graphe depuis fichier
     std::cout<<"Nom du fichier de ponderations : ";
     //  std::cin>>fichier_ponde;
 
-    fichier_ponde="poids.txt"; /// A vire a la fin
-    fichier_topo="graphe.txt";
+    fichier_ponde="poids2.txt"; /// A vire a la fin
+    fichier_topo="graphe2.txt";
 
     std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
 

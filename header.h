@@ -12,10 +12,12 @@
 #include <algorithm>
 
 
-
+float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[10][10],int p);
 struct indice
 {
     float degre_non_normamise,degre_nomralise;
+    float intermediaire_non_normamise,intermediaire_nomralise;
+
 };
 
 
@@ -319,7 +321,8 @@ public :
     void calcul_indice_degres() ;
 
 
-void Dijkstra(int num_s0, int num_sf)const;
+std::vector<int> Dijkstra(int num_s0)const;
+void centraliteintermediarite(int num_s0, int num_sf)const;
 
     void Visualisation_indice(int i);
     void affi_indice_Tdegre() const ;

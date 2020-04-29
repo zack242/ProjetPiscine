@@ -1,6 +1,69 @@
 #include <iostream>
 #include "header.h"
 
+float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[10][10],int p)
+{
+    float ca[taille][taille],cb[taille][taille],tot;
+    float nbtotal=0;
+
+//transfert de notre matrice dans une matrice de calcul
+    for(int i=0; i<taille; i++)
+    {
+        for(int j=0; j<taille; j++)
+        {
+            ca[i][j]=matrice[i][j];
+        }
+    }
+//si la puissance demander vaut 1 on affiche juste
+    if(p==1)
+    {
+    }
+    else
+    {
+
+        for(int v=0; v<p-1; v++)
+        {
+            for(int i=0; i<taille; i++)
+            {
+                for(int j=0; j<taille; j++)
+                {
+                    cb[i][j]=ca[i][j];
+                }
+            }
+
+            for(int i=0; i<taille; i++)
+            {
+
+                for(int j=0; j<taille; j++)
+                {
+
+                    for(int k=0; k<taille; k++)
+                    {
+                        tot=tot+(cb[i][k]*matrice[k][j]);
+                    }
+
+                    ca[j][i]=tot;
+                    tot=0;
+                }
+            }
+
+        }
+
+
+       /* printf("\t\t\t**  Affichage de la matrice  **\n\n\n");
+
+        for(int i=0; i<taille; i++)
+        {
+            for(int j=0; j<taille; j++)
+            {
+                printf("\t%.2f",ca[i][j]);
+            }
+            printf("\n\n");
+        }*/
+    }
+    nbtotal=ca[sum_1][sum_2];
+    return nbtotal;
+}
 void Sommet::indice_degre(float ordre)
 {
     int nbrsucc=0;
@@ -35,18 +98,18 @@ auto cmp = [](std::pair<const Sommet*,double> p1, std::pair<const
 {
     return p2.second<p1.second;
 };
-void Graphe::Dijkstra(int num_s0, int num_sf)const
+std::vector<int> Graphe::Dijkstra(int num_s0)const
 {
     int NbNodes=m_sommets.size();
     std::vector<int> Distances(NbNodes, std::numeric_limits<int>::max());//pour chaque sommets on mets une distance infinie( std::numeric_limits<int>::max()) correspond a la valeur mas que peut contenir un int en C++
     Distances[num_s0] = 0;//la distance entre le sommets de départs et lui-meme est 0
     std::vector<int> Parents(NbNodes, -1);//pour chaque sommets on definie son parents a -1 qui corspondt a aucun parents
+
 /// déclaration de la file de priorité
     std::priority_queue<std::pair<const Sommet*,double>,
         std::vector<std::pair<const Sommet*,double>>,decltype(cmp)> file(cmp);
 
     file.push({m_sommets[num_s0],0});//on mets dans le liste le sommet de commencement
-
 
     while(!file.empty())
     {
@@ -69,53 +132,110 @@ void Graphe::Dijkstra(int num_s0, int num_sf)const
                     Parents[v2] = v;//on change le predessesseur
                     file.push({m_sommets[v2],Distances[v2]});//on push le sommet et la ditance dans notre file
                 }
+
             }
         }
     }
-    for (auto i = 0; i != NbNodes; ++i)                                            // résultat
-    {
-        if(i !=num_s0 )
-        {
-            std::cout << "\nnoeud  " << num_s0 << " au noeud " << i << " longueur :  " << Distances[i] << std::endl;
 
-            std::cout << i;
-            for (auto p = Parents[i]; p != -1; p = Parents[p])
-                std::cout << " <- " << p;
-            std::cout << std::endl;
-        }
-    }
+    return Distances;
 
-/*
-//on affiche uniquement le sommet finale demander
-    std::cout << "\n noeud " << num_s0 << " a noeud " << num_sf << " longueur :  " << Distances[num_sf] << std::endl;
-    std::cout << num_sf;
-    std::vector<int> sommelon;
-    int precedent=num_sf;
-    std::pair<const Sommet*,double> i;
-    std::map<const Sommet*,int> temp;
-    for (int p = Parents[num_sf]; p != -1; p = Parents[p])
-    {
-        std::cout << " <-- " << p;
-        temp=m_sommets[p]->getSuccesseurs();//on récupaire le détail de la somme des distances
-        for (auto s : temp)
-        {
-            if(s.first->getNum()==precedent)
-            {
-                sommelon.push_back(s.second);
-            }
-        }
-        precedent=p;
-    }
-    std::cout << " : longueur  " << sommelon[0] ;//on affiche le détail de la somme
-    sommelon.erase (sommelon.begin()+0);
-    for(auto s : sommelon)
-    {
-        std::cout <<" + "  <<s ;
-    }
-    std::cout << " = "<< Distances[num_sf] ;
-    std::cout << std::endl;
-*/
 }
+void Graphe::centraliteintermediarite(int num_s0, int num_sf)const
+{
+
+    int taille=m_sommets.size();
+    float matrice[10][10];
+    float matricedist[10][10];
+    std::vector<float> tempindice;
+    std::map<const Sommet*,int> suceur;
+    int nbtotal=0;
+    //on inisialise la matrice
+    for (int i = 0; i < taille; i++)
+    {
+        for (int j = 0; j < taille; j++)
+        {
+            matrice[i][j] = 0;
+            matricedist[i][j] = 0;
+        }
+    }
+
+    //remplisage de la matrice d'adjacence
+    for(size_t s=0; s<m_sommets.size(); ++s)
+    {
+        suceur=m_sommets[s]->getSuccesseurs();
+        for(auto r : suceur)
+        {
+            matrice[s][r.first->getNum()]=1;
+        }
+
+    }
+
+    std::vector<int> Distances(taille, 0);
+    for(int i=0; i<taille; ++i)
+    {
+        Distances=Dijkstra(i);
+        for(int j=0; j<taille; ++j)
+        {
+            matricedist[i][j]=Distances[j];
+        }
+    }
+
+    float indice_nn;
+    for (int i = 0; i < taille; ++i)
+    {
+
+        for(int j=0; j<taille; ++j)
+        {
+
+            for(int k=0; k<taille; ++k)
+            {
+                if(i !=j && i!=k)
+                {
+
+                    if(matricedist[j][i]+matricedist[i][k]==matricedist[j][k])
+                    {
+
+                        float tempjk=0;
+                        tempjk=nbtopluscourtchemin(j,k,taille,matrice,matricedist[j][k]);
+                        if(1 < tempjk)
+                        {
+                            float tempji,tempik;
+                            tempji=nbtopluscourtchemin(j,i,taille,matrice,matricedist[j][i]);
+                            tempik=nbtopluscourtchemin(i,k,taille,matrice,matricedist[i][k]);
+                            tempik=tempik-1;
+                            float temp=(tempji+tempik)/tempjk;
+                            indice_nn=indice_nn+temp;
+                            std::cout<<"id:"<<i<<" , "<<j<<" , "<<k<<" :"<< matricedist[j][i]<<" + "<<matricedist[i][k]<<" = "<<matricedist[j][k]<<std::endl;
+                            std::cout<<"test2 "<<i<<" : "<<temp<<" : "<<tempji<<" : "<<tempik<<" : "<<tempjk<<std::endl;
+
+
+                        }
+                        else
+                        {
+                            ++indice_nn;
+                        }
+
+                    }
+                }
+
+
+            }
+
+            tempindice.push_back(indice_nn);
+            indice_nn=0;
+        }
+
+    }
+    for(int i=0; i<taille; ++i)
+    {
+        std::cout<<"sommet " << i << " indice: "<<tempindice[i]<<std::endl;
+    }
+    //nbtotal=nbtopluscourtchemin(1,4,taille,matrice);
+    //std::cout <<nbtotal<< std::endl;
+}
+
+
+
 void Graphe::affi_indice_Tdegre() const
 {
     for (auto s : m_sommets)
@@ -124,6 +244,7 @@ void Graphe::affi_indice_Tdegre() const
         std::cout<<std::endl;
     }
 }
+
 
 
 

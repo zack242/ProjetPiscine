@@ -15,6 +15,7 @@ struct indice
 {
     float degre_non_normamise,degre_nomralise;
     float vecteur;
+    float proximite;
 };
 
 
@@ -78,6 +79,10 @@ public :
         case 2 :
             return m_indice.vecteur;
 
+        case 3 :
+            return m_indice.proximite;
+
+
 
 
         }
@@ -95,6 +100,13 @@ public :
     {
 
         m_indice.vecteur=indice;
+
+    }
+
+    void setIndice_proximite(float indice)
+    {
+
+        m_indice.proximite=indice;
 
     }
 
@@ -156,6 +168,10 @@ public :
             ofs << m_num <<" "<<m_indice.vecteur <<std::endl ;
             break;
 
+        case 3 :
+            ofs << m_num <<" "<<m_indice.proximite <<std::endl ;
+            break;
+
 
 
 
@@ -170,6 +186,8 @@ public :
     void Calcul_indice_adjac() ;
     void affi_indice_vecteur() const;
 
+    void affi_indice_proximite() const;
+
 
 };
 
@@ -183,6 +201,7 @@ private :
     ///liste des sommets (vecteur de pointeurs sur Sommet)
     std::vector<Sommet*> m_sommets;
     int m_orientation;
+    int m_taille;
 
     std::string nomFichier;
 
@@ -243,11 +262,12 @@ public :
         ifp >> taille_pondo;
 
         if(taille_pondo!=taille_topo)
-            {
+        {
             std::cout<<"Erreur  taille  ";
             exit(0);
 
-            }
+        }
+        m_taille=taille_topo;
 
         if ( ifs.fail() )
             throw std::runtime_error("Probleme lecture taille du graphe");
@@ -382,7 +402,7 @@ public :
     void setnomFichier(std::string fichier)
     {
 
-    nomFichier=fichier;
+        nomFichier=fichier;
 
     }
 
@@ -398,6 +418,9 @@ public :
     void calcul_vecteur_propre() ;
     void DFS(int num_S,std::vector<int> couleurs);
     void affi_indice_Tvecteur() const;
+    float AlegoDjiskra(int num_D);
+    void calcul_indice_proximite();
+    void affi_indice_Tproximite() const;
 };
 
 ///Proto

@@ -143,7 +143,7 @@ Graphe* Chargement_Graphe() ///SS Chargement d'un graphe depuis fichier
     std::cout<<"Nom du fichier de ponderations : ";
     //  std::cin>>fichier_ponde;
 
-    fichier_ponde="poids2.txt"; /// A vire a la fin
+    fichier_ponde="poids2bis.txt"; /// A vire a la fin
     fichier_topo="graphe2.txt";
 
     std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;

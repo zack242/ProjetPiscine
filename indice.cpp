@@ -129,12 +129,24 @@ std::vector<int> Graphe::Dijkstra(int num_s0)const
     return Distances;
 
 }
-void Graphe::centraliteintermediarite(int num_s0, int num_sf)const
+void Sommet::indice_centralite(float ordre,float indicenn)
+{
+    float normalisation=0;
+
+    normalisation=(ordre*ordre-3*ordre+2)/2;
+
+    //std::cout<<" test : "<<indicenn/normalisation<<" nn : "<<indicenn<< std::endl;
+    m_indice.intermediaire_non_normamise=indicenn;
+
+    m_indice.intermediaire_nomralise=(indicenn/normalisation);
+}
+void Graphe::centraliteintermediarite()const
 {
 
     int taille=m_sommets.size();
     float matrice[10][10];
     float matricedist[10][10];
+    float indice_nn=0;
     std::vector<float> tempindice;
     std::map<const Sommet*,int> suceur;
     int nbtotal=0;
@@ -169,7 +181,7 @@ void Graphe::centraliteintermediarite(int num_s0, int num_sf)const
         }
     }
 
-    float indice_nn;
+
     for (int i = 0; i < taille; ++i)
     {
 
@@ -186,21 +198,15 @@ void Graphe::centraliteintermediarite(int num_s0, int num_sf)const
 
                         float tempjk=0;
                         tempjk=nbtopluscourtchemin(j,k,taille,matrice,matricedist[j][k]);
-                        if(1 < tempjk)
-                        {
-                            float tempji,tempik;
-                            tempji=nbtopluscourtchemin(j,i,taille,matrice,matricedist[j][i]);
-                            tempik=nbtopluscourtchemin(i,k,taille,matrice,matricedist[i][k]);
-                            tempik=tempik-1;
-                            float temp=(tempji+tempik)/tempjk;
-                            indice_nn=indice_nn+temp;
-                            //std::cout<<"id:"<<i<<" , "<<j<<" , "<<k<<" :"<< matricedist[j][i]<<" + "<<matricedist[i][k]<<" = "<<matricedist[j][k]<<std::endl;
-                           // std::cout<<"test2 "<<i<<" : "<<temp<<" : "<<tempji<<" : "<<tempik<<" : "<<tempjk<<std::endl;
-                        }
-                        else
-                        {
-                            ++indice_nn;
-                        }
+                        //if(1 < tempjk){
+                        float tempji,tempik;
+                        tempji=nbtopluscourtchemin(j,i,taille,matrice,matricedist[j][i]);
+                        tempik=nbtopluscourtchemin(i,k,taille,matrice,matricedist[i][k]);
+                        tempik=tempik-1;
+                        float temp=(tempji+tempik)/tempjk;
+                        indice_nn=indice_nn+temp;
+                        // std::cout<<"id:"<<i<<" , "<<j<<" , "<<k<<" :"<< matricedist[j][i]<<" + "<<matricedist[i][k]<<" = "<<matricedist[j][k]<<std::endl;
+                        //std::cout<<"temp: "<<temp<<" "<<indice_nn<<"test2 "<<i<<" : "<<temp<<" : "<<tempji<<" : "<<tempik<<" : "<<tempjk<<std::endl;
 
                     }
                 }
@@ -208,16 +214,17 @@ void Graphe::centraliteintermediarite(int num_s0, int num_sf)const
 
             }
 
-            tempindice.push_back(indice_nn);
-            indice_nn=0;
-        }
 
+        }
+        tempindice.push_back(indice_nn);
+        indice_nn=0;
     }
-    for(int i=0; i<taille; ++i)
+    /*for(int i=0; i<taille; ++i)
     {
         std::cout<<"sommet " << i << " indice: "<<tempindice[i]<<std::endl;
-    }
-
+    }*/
+    for(int i=0; i<taille; ++i)
+        m_sommets[i]->indice_centralite(taille,tempindice[i]); //On envoie l'ordre du graphe -1
 }
 
 

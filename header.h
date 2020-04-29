@@ -137,7 +137,9 @@ public :
         ofs.seekp(0,std::ios::end);
 
 
-        ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
+        ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise <<" " ;
+
+        ofs << m_num <<" "<<m_indice.intermediaire_nomralise<<" "<<m_indice.intermediaire_non_normamise << std::endl ;
 
         ofs.close();
     }
@@ -146,7 +148,7 @@ public :
 
     void indice_degre(float ordre);
     void  affi_degre_sommmet() const  ;
-
+    void indice_centralite(float ordre,float indicenn);
 
 };
 
@@ -322,7 +324,7 @@ public :
 
 
 std::vector<int> Dijkstra(int num_s0)const;
-void centraliteintermediarite(int num_s0, int num_sf)const;
+void centraliteintermediarite()const;
 
     void Visualisation_indice(int i);
     void affi_indice_Tdegre() const ;

@@ -11,12 +11,8 @@ int main()
 
     cout << "--Projet Theorie des graphes-- \n" << endl;
 
-      A=Chargement_Graphe();
-        A->centraliteintermediarite(1,4);
-
-
-/*while(!0)
-       A=menu(A);*/
+while(!0)
+       A=menu(A);
 
 
 
@@ -105,8 +101,8 @@ Graphe* menu(Graphe* A)
             break;
 
         case 4 : ///Centralite d'intermediaire
-
-
+                 A->centraliteintermediarite();
+                A->sauvgarder();
             break;
 
 

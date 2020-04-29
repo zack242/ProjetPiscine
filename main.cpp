@@ -31,7 +31,7 @@ Graphe* menu(Graphe* A)
     std::cout<<"\n          Menu \n\n";
 
     std::cout<<"1/Chargement d'un Graphe. \n";
-    std::cout<<"2/Chagement du systeme de ponderation. \n";
+    std::cout<<"2/Changement du systeme de ponderation. \n";
     std::cout<<"3/Calculer, afficher et Sauvegarder les differents indices de centralite.\n";
     std::cout<<"4/Tester la vulnerabilite. \n";
     std::cout<<"99/Exit\n\n ";
@@ -52,7 +52,7 @@ Graphe* menu(Graphe* A)
 
     case 2 : ///Chargement du systeme de ponderation
 
-
+           A=Changement_Graphe_ponderation();
 
     case 3 : /// Calculer , afficher , Saivgarder
 
@@ -85,10 +85,6 @@ Graphe* menu(Graphe* A)
             break;
 
         case 2 : /// Indice centralite de degres propre
-
-
-
-            break;
 
 
 
@@ -143,6 +139,33 @@ Graphe* Chargement_Graphe() ///SS Chargement d'un graphe depuis fichier
     //  std::cin>>fichier_ponde;
 
     fichier_ponde="poids.txt"; /// A vire a la fin
+    fichier_topo="graphe.txt";
+
+    std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
+
+    B=new Graphe{fichier_topo,fichier_ponde}; /// Allocation du graphe
+
+    B->Dessiner();
+    B->afficher();
+
+    return B;
+
+}
+
+Graphe* Changement_Graphe_ponderation()
+
+{
+
+  Graphe* B{};
+
+    BITMAP* page ;
+    int i;
+    std::string fichier_ponde;
+    std::string fichier_topo;
+
+    std::cout<<"Nom du fichier de ponderations : ";
+    std::cin>>fichier_ponde;
+
     fichier_topo="graphe.txt";
 
     std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;

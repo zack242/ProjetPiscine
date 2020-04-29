@@ -204,6 +204,7 @@ public :
 
         int taille;
         ifs >> taille;
+        ifp >> taille;
         if ( ifs.fail() )
             throw std::runtime_error("Probleme lecture taille du graphe");
 
@@ -212,7 +213,7 @@ public :
         for (int i=0; i<taille; ++i)
         {
             ifs>>index>>num1>>num2;
-            ifp>>poids;
+            ifp>>index>>poids;
 
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture arc");
@@ -342,6 +343,8 @@ public :
 Graphe* menu(Graphe* A);
 
 Graphe* Chargement_Graphe();
+
+Graphe* Changement_Graphe_ponderation();
 
 
 

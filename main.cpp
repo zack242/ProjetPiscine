@@ -86,8 +86,11 @@ Graphe* menu(Graphe* A)
 
         case 2 : /// Indice centralite de degres propre
 
-        A->calcul_vecteur_propre();
-
+            A->calcul_vecteur_propre();
+            A->affi_indice_Tvecteur();
+            A->Visualisation_indice(choix_indice);
+            A->Dessiner();
+            A->sauvgarder(choix_indice);
 
 
             break;

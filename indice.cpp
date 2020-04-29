@@ -48,15 +48,20 @@ void Graphe::calcul_vecteur_propre()
     float S_indice=0;
     float S_total=0;
     float lamda=0;
-    std::vector<int> stock((int)m_sommets.size(),0);
+    float lamdatemp=0;
+    std::vector<float> stock((int)m_sommets.size(),0);
 
-    int j=2;
+    int j=0;
     int k=0;
 
     calcul_indice_degres();
     do
     {
+
+          lamdatemp=lamda;
+
         k=0;
+        S_total=0;
         for (auto s : m_sommets)
         {
             S_indice=0;
@@ -66,18 +71,13 @@ void Graphe::calcul_vecteur_propre()
 
             }
             stock[k]=S_indice;
-           std::cout<<S_indice<<"\n "<<"Stock : "<<stock[k]<<" \n";
-
 
             S_total+=pow(S_indice,2);
             k++;
 
-
         }
 
-
         lamda=sqrt(S_total);
-
 
         int i=0;
 
@@ -85,24 +85,31 @@ void Graphe::calcul_vecteur_propre()
         {
 
             s->setIndice_vecteur(stock[i]/lamda);
-            std::cout<<"CVP' : "<<stock[i]<<" lambda : "<<lamda<<" CVP : "<<s->getIndice(2)<<" \n ";
             i++;
 
         }
 
 
-
-        std::cin>>j;
-
-    }
-    while(j!=0);
+    }while(lamda != lamdatemp);
 
 }
 
 
+void Sommet::affi_indice_vecteur() const
+{
+    std::cout<<"Sommet : "<<m_nom<< std::endl;
+    std::cout<<"Indice  : "<<m_indice.vecteur<<"\n" ;
 
+}
 
-
+void Graphe::affi_indice_Tvecteur() const
+{
+    for (auto s : m_sommets)
+    {
+        s->affi_indice_vecteur();
+        std::cout<<std::endl;
+    }
+}
 
 
 

@@ -7,6 +7,7 @@
 #include <allegro.h>
 #include <stdio.h>
 #include <algorithm>
+#include <string>
 
 
 
@@ -42,6 +43,11 @@ public :
     int getNum()const
     {
         return m_num;
+    }
+
+    std::string getNom()const
+    {
+        return m_nom;
     }
 
     int getX()const
@@ -120,8 +126,8 @@ public :
     {
         const char *nom = m_nom.c_str();
 
+        textprintf_ex(bmp,font,m_x*10,m_y*10-30,makecol(0,0,0),-1,nom);
 
-        textprintf_ex(bmp,font,m_x*10,m_y*10-15,makecol(0,0,0),-1,nom);
 
         for (auto s : m_successeurs) ///Dessin des Arcs
         {
@@ -136,13 +142,24 @@ public :
     }
 
 
-    void sauvgarderindice(std::ofstream &ofs) const
+    void sauvgarderindice(std::ofstream &ofs,int choix) const
     {
 
-       // ofs.seekp(0,std::ios::end); Initule en mode automatique
-        ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
-       // ofs.close(); ///Inutilse en mode automatique
+        switch(choix)
+        {
 
+        case 1 :
+            ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
+            break;
+
+        case 2 :
+            ofs << m_num <<" "<<m_indice.vecteur <<std::endl ;
+            break;
+
+
+
+
+        }
     }
 
 ///Proto
@@ -150,7 +167,8 @@ public :
     void indice_degre(float ordre);
     void  affi_degre_sommmet() const  ;
 
-void Calcul_indice_adjac() ;
+    void Calcul_indice_adjac() ;
+    void affi_indice_vecteur() const;
 
 
 };
@@ -338,9 +356,9 @@ public :
 
         std::ofstream ofs{nomFichier};
 
-         for (auto s : m_sommets)
+        for (auto s : m_sommets)
         {
-            s->sauvgarderindice(ofs);
+            s->sauvgarderindice(ofs,choix);
 
         }
 
@@ -353,6 +371,7 @@ public :
     void affi_indice_Tdegre() const ;
     void calcul_vecteur_propre() ;
     void DFS(int num_S,std::vector<int> couleurs);
+    void affi_indice_Tvecteur() const;
 };
 
 ///Proto

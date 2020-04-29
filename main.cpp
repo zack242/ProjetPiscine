@@ -130,7 +130,7 @@ Graphe* menu(Graphe* A)
 
         case 4 : ///Centralite d'intermediaire
                  A->centraliteintermediarite();
-                A->sauvgarder();
+                A->sauvgarder(choix_indice);
             break;
 
 

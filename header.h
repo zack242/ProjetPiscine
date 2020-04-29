@@ -7,12 +7,14 @@
 #include <allegro.h>
 #include <stdio.h>
 #include <algorithm>
+#include <string>
 
 
 
 struct indice
 {
     float degre_non_normamise,degre_nomralise;
+    float vecteur;
 };
 
 
@@ -43,6 +45,11 @@ public :
         return m_num;
     }
 
+    std::string getNom()const
+    {
+        return m_nom;
+    }
+
     int getX()const
     {
         return m_x;
@@ -61,7 +68,7 @@ public :
     }
 
 
-    float getIndice(int choix)
+    float getIndice(int choix) const
     {
         switch(choix)
         {
@@ -69,7 +76,8 @@ public :
             return m_indice.degre_nomralise;
 
         case 2 :
-            return m_indice.degre_non_normamise;
+            return m_indice.vecteur;
+
 
 
         }
@@ -80,6 +88,13 @@ public :
     void setColor(int couleur)
     {
         m_couleur=couleur;
+
+    }
+
+    void setIndice_vecteur(float indice)
+    {
+
+        m_indice.vecteur=indice;
 
     }
 
@@ -111,33 +126,49 @@ public :
     {
         const char *nom = m_nom.c_str();
 
-        circlefill(bmp,m_x*100,m_y*100,30,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
-        circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
+        textprintf_ex(bmp,font,m_x*10,m_y*10-30,makecol(0,0,0),-1,nom);
 
-        textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
 
         for (auto s : m_successeurs) ///Dessin des Arcs
         {
-            line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
+            line(bmp,m_x*10,m_y*10,s.first->getX()*10,s.first->getY()*10,makecol(255,0,0));
 
         }
+
+        circlefill(bmp,m_x*10,m_y*10,10,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
+
+        circlefill(bmp,m_x*10,m_y*10,3,makecol(0,0,0));
 
     }
 
 
-    void sauvgarderindice(std::ofstream &ofs) const
+    void sauvgarderindice(std::ofstream &ofs,int choix) const
     {
 
-       // ofs.seekp(0,std::ios::end); Initule en mode automatique
-        ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
-       // ofs.close(); ///Inutilse en mode automatique
+        switch(choix)
+        {
 
+        case 1 :
+            ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
+            break;
+
+        case 2 :
+            ofs << m_num <<" "<<m_indice.vecteur <<std::endl ;
+            break;
+
+
+
+
+        }
     }
 
 ///Proto
 
     void indice_degre(float ordre);
     void  affi_degre_sommmet() const  ;
+
+    void Calcul_indice_adjac() ;
+    void affi_indice_vecteur() const;
 
 
 };
@@ -200,6 +231,7 @@ public :
             indice temp;
             temp.degre_non_normamise=0;
             temp.degre_nomralise=0;
+            temp.vecteur=1;
             m_sommets.push_back( new Sommet{index,nom,x,y,temp});
 
         }
@@ -211,6 +243,7 @@ public :
             throw std::runtime_error("Probleme lecture taille du graphe");
 
         int num1,num2,index,poids;
+
 
         for (int i=0; i<taille; ++i)
         {
@@ -326,9 +359,9 @@ public :
 
         std::ofstream ofs{nomFichier};
 
-         for (auto s : m_sommets)
+        for (auto s : m_sommets)
         {
-            s->sauvgarderindice(ofs);
+            s->sauvgarderindice(ofs,choix);
 
         }
 
@@ -352,6 +385,9 @@ public :
     void calcul_indice_degres() ;
     void Visualisation_indice(int i);
     void affi_indice_Tdegre() const ;
+    void calcul_vecteur_propre() ;
+    void DFS(int num_S,std::vector<int> couleurs);
+    void affi_indice_Tvecteur() const;
 };
 
 ///Proto

@@ -160,11 +160,9 @@ Graphe* Chargement_Graphe(std::string fichier_topo, std::string fichier_ponde)  
 
     std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
 
-    fichier_ponde="poids2bis.txt"; /// A vire a la fin
-    fichier_topo="graphe2.txt";
 
-    //temp_topo=fichier_topo+".txt";
-    //temp_pond=fichier_ponde+".txt";
+    temp_topo=fichier_topo+".txt";
+    temp_pond=fichier_ponde+".txt";
 
 
     std::cout<<temp_topo;

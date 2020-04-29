@@ -138,8 +138,17 @@ Graphe* menu(Graphe* A)
 
             break ;
 
-
         }
+
+        break;
+
+        case 4 :
+
+            A->GrapheConnexe();
+
+            break;
+
+
 
     default :
 

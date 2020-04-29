@@ -117,7 +117,7 @@ void Graphe::affi_indice_Tvecteur() const
 
 
 
-float Graphe::AlegoDjiskra(int num_D) // Alego de Djiskra
+std::vector<int> Graphe::AlegoDjiskra(int num_D) // Alego de Djiskra
     {
 
         //tableau pour le marquage ;
@@ -222,21 +222,29 @@ float Graphe::AlegoDjiskra(int num_D) // Alego de Djiskra
 
    // distance_min=distance[num_F]; // On affect la distance min
 
-return total;
+return distance;
 
     }
-
 
 
 
 void Graphe::calcul_indice_proximite()
 {
 float temp;
+std::vector<int> preds;
+
 for(auto s : m_sommets)
 {
-       s->setIndice_proximite((m_taille-1)/AlegoDjiskra(s->getNum()));
-       std::cout<<"\n Sommet "<<s->getNom()<<"Indice : "<<s->getIndice(3);
-      //temp=(m_taille-1)/(AlegoDjiskra(s->getNum()));
+    temp=0;
+    preds=AlegoDjiskra(s->getNum());
+
+       for(int i=0 ; i<preds.size();i++)
+        {
+        temp+=preds[i];
+      //  std::cout<<"\n temp "<<temp<<"preds "<<preds[i];
+        }
+
+       s->setIndice_proximite((m_taille-1)/temp);
 
 }
 

@@ -418,9 +418,10 @@ public :
     void calcul_vecteur_propre() ;
     void DFS(int num_S,std::vector<int> couleurs);
     void affi_indice_Tvecteur() const;
-    float AlegoDjiskra(int num_D);
+    std::vector<int> AlegoDjiskra(int num_D);
     void calcul_indice_proximite();
     void affi_indice_Tproximite() const;
+    void GrapheConnexe();
 };
 
 ///Proto

@@ -10,6 +10,8 @@
 #include <string>
 #include <limits>
 #include <algorithm>
+#include <string>
+
 
 
 float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[10][10],int p);
@@ -18,6 +20,9 @@ struct indice
     float degre_non_normamise,degre_nomralise;
     float intermediaire_non_normamise,intermediaire_nomralise;
 
+    float vecteur;
+    float proximite;
+
 };
 
 
@@ -25,11 +30,11 @@ class Sommet
 {
 
 private :
-
+    std::string m_nom;
     int m_num;
     int m_x,m_y;
     indice m_indice; ///Struct stockant les indices
-    std::string m_nom;
+
 
     std::map<const Sommet*,int> m_successeurs; ///chaque sommet possède la liste de ses successeurs (un vecteur de pointeurs sur Sommet)
     int  m_couleur;
@@ -46,6 +51,11 @@ public :
     int getNum()const
     {
         return m_num;
+    }
+
+    std::string getNom()const
+    {
+        return m_nom;
     }
 
     int getX()const
@@ -66,7 +76,7 @@ public :
     }
 
 
-    float getIndice(int choix)
+    float getIndice(int choix) const
     {
         switch(choix)
         {
@@ -74,7 +84,12 @@ public :
             return m_indice.degre_nomralise;
 
         case 2 :
-            return m_indice.degre_non_normamise;
+            return m_indice.vecteur;
+
+        case 3 :
+            return m_indice.proximite;
+
+
 
 
         }
@@ -85,6 +100,20 @@ public :
     void setColor(int couleur)
     {
         m_couleur=couleur;
+
+    }
+
+    void setIndice_vecteur(float indice)
+    {
+
+        m_indice.vecteur=indice;
+
+    }
+
+    void setIndice_proximite(float indice)
+    {
+
+        m_indice.proximite=indice;
 
     }
 
@@ -107,7 +136,7 @@ public :
     {
         std::cout<<"     sommet "<<m_nom<<"-"<<m_num<<" Coords : "<<m_x<<" ; "<<m_y<<" : ";
         for (auto s : m_successeurs)
-            std::cout<<s.first->getNum()<<" ";
+            std::cout<<s.first->getNum()<<" ("<<s.second<<") ";
     }
 
 
@@ -116,39 +145,60 @@ public :
     {
         const char *nom = m_nom.c_str();
 
-        circlefill(bmp,m_x*100,m_y*100,30,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
-        circlefill(bmp,m_x*100,m_y*100,3,makecol(0,0,0));
+        textprintf_ex(bmp,font,m_x*10,m_y*10-30,makecol(0,0,0),-1,nom);
 
-        textprintf_ex(bmp,font,m_x*100,m_y*100-15,makecol(0,0,0),-1,nom);
 
         for (auto s : m_successeurs) ///Dessin des Arcs
         {
-            line(bmp,m_x*100,m_y*100,s.first->getX()*100,s.first->getY()*100,makecol(255,0,0));
+            line(bmp,m_x*10,m_y*10,s.first->getX()*10,s.first->getY()*10,makecol(255,0,0));
 
         }
+
+        circlefill(bmp,m_x*10,m_y*10,10,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
+
+        circlefill(bmp,m_x*10,m_y*10,3,makecol(0,0,0));
 
     }
 
 
-    void sauvgarderindice() const
+    void sauvgarderindice(std::ofstream &ofs,int choix) const
     {
 
-        std::fstream ofs("indice.txt");
-        ofs.seekp(0,std::ios::end);
+        switch(choix)
+        {
 
+        case 1 :
+            ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise << std::endl ;
+            break;
+
+        case 2 :
+            ofs << m_num <<" "<<m_indice.vecteur <<std::endl ;
+            break;
+
+        case 3 :
+            ofs << m_num <<" "<<m_indice.proximite <<std::endl ;
+            break;
 
         ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise <<" " ;
 
         ofs << m_num <<" "<<m_indice.intermediaire_nomralise<<" "<<m_indice.intermediaire_non_normamise << std::endl ;
 
-        ofs.close();
+
+        }
     }
 
 ///Proto
 
     void indice_degre(float ordre);
     void  affi_degre_sommmet() const  ;
+
     void indice_centralite(float ordre,float indicenn);
+
+    void Calcul_indice_adjac() ;
+    void affi_indice_vecteur() const;
+
+    void affi_indice_proximite() const;
+
 
 };
 
@@ -162,6 +212,9 @@ private :
     ///liste des sommets (vecteur de pointeurs sur Sommet)
     std::vector<Sommet*> m_sommets;
     int m_orientation;
+    int m_taille;
+
+    std::string nomFichier;
 
 
 public :
@@ -208,21 +261,35 @@ public :
             indice temp;
             temp.degre_non_normamise=0;
             temp.degre_nomralise=0;
+            temp.vecteur=1;
             m_sommets.push_back( new Sommet{index,nom,x,y,temp});
 
         }
 
-        int taille;
-        ifs >> taille;
+        int taille_topo;
+        int taille_pondo;
+
+        ifs >> taille_topo;
+        ifp >> taille_pondo;
+
+        if(taille_pondo!=taille_topo)
+        {
+            std::cout<<"Erreur  taille  ";
+            exit(0);
+
+        }
+        m_taille=taille_topo;
+
         if ( ifs.fail() )
             throw std::runtime_error("Probleme lecture taille du graphe");
 
         int num1,num2,index,poids;
 
-        for (int i=0; i<taille; ++i)
+
+        for (int i=0; i<taille_topo; ++i)
         {
             ifs>>index>>num1>>num2;
-            ifp>>poids;
+            ifp>>index>>poids;
 
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture arc");
@@ -307,18 +374,54 @@ public :
 
     }
 
-    void sauvgarder() const
+    void sauvgarder(int choix) const
     {
-        std::ofstream ofs{"indice.txt"};
+
+        std::string nomFichier;
+
+        switch (choix) ///Automatisation de la sauvgarde
+        {
+        case 1 :
+            nomFichier="indice_degre.txt";
+            break ;
+
+        case 2 :
+            nomFichier="indice_vecteur.txt";
+            break ;
+
+        case 3 :
+            nomFichier="indice_proximite.txt";
+            break ;
+
+        case 4 :
+            nomFichier="indice_intermediaire.txt";
+            break ;
+        }
+
+        std::ofstream ofs{nomFichier};
+
         for (auto s : m_sommets)
         {
-            s->sauvgarderindice();
+            s->sauvgarderindice(ofs,choix);
 
         }
 
-        std::cout<<"\n ----Sauvgarde reussi----"<<std::endl;
+        std::cout<<"\n ----Sauvgarde reussi dans "<<nomFichier<<" ----"<<std::endl;
 
     }
+
+    void setnomFichier(std::string fichier)
+    {
+
+        nomFichier=fichier;
+
+    }
+
+    std::string getFichier()
+    {
+        return nomFichier;
+    }
+
 
     void calcul_indice_degres() ;
 
@@ -329,12 +432,19 @@ void centraliteintermediarite()const;
     void Visualisation_indice(int i);
     void affi_indice_Tdegre() const ;
 
+    void calcul_vecteur_propre() ;
+    void DFS(int num_S,std::vector<int> couleurs);
+    void affi_indice_Tvecteur() const;
+    float AlegoDjiskra(int num_D);
+    void calcul_indice_proximite();
+    void affi_indice_Tproximite() const;
+
 };
 
 ///Proto
 Graphe* menu(Graphe* A);
 
-Graphe* Chargement_Graphe();
+Graphe* Chargement_Graphe(std::string fichier_topo,std::string fichier_pondo);
 
 
 

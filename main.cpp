@@ -6,10 +6,10 @@ using namespace std;
 int main()
 {
     allegro_init();
-
     Graphe* A{};
 
-    cout << "--Projet Theorie des graphes-- \n" << endl;
+
+ cout << "--Projet Theorie des graphes-- \n" << endl;
 
 while(!0)
        A=menu(A);
@@ -27,12 +27,15 @@ Graphe* menu(Graphe* A)
 {
 
     int choix=0,choix_indice=0,choix_action=0 ;
+    std::string fichier_topo;
+    std::string fichier_ponde;
+
 
 
     std::cout<<"\n          Menu \n\n";
 
     std::cout<<"1/Chargement d'un Graphe. \n";
-    std::cout<<"2/Chagement du systeme de ponderation. \n";
+    std::cout<<"2/Changement du systeme de ponderation. \n";
     std::cout<<"3/Calculer, afficher et Sauvegarder les differents indices de centralite.\n";
     std::cout<<"4/Tester la vulnerabilite. \n";
     std::cout<<"99/Exit\n\n ";
@@ -47,12 +50,29 @@ Graphe* menu(Graphe* A)
 
     case 1 : ///Chargement du graphe
 
-        A=Chargement_Graphe();
+
+        std::cout<<"Nom du fichier de topologie : ";
+       // std::cin>>fichier_topo;
+        std::cout<<"Nom du fichier de ponderations : ";
+      //  std::cin>>fichier_ponde;
+      fichier_ponde="poids";
+      fichier_topo="graphe";
+
+        A=Chargement_Graphe(fichier_topo,fichier_ponde);
+        A->setnomFichier(fichier_topo);
 
         break;
 
     case 2 : ///Chargement du systeme de ponderation
 
+        fichier_topo=A->getFichier();
+        std::cout<<"Nom du fichier de ponderations : ";
+        std::cin>>fichier_ponde;
+
+        A=Chargement_Graphe(fichier_topo,fichier_ponde);
+        A->setnomFichier(fichier_topo);
+
+        break;
 
 
     case 3 : /// Calculer , afficher , Saivgarder
@@ -80,22 +100,30 @@ Graphe* menu(Graphe* A)
             A->affi_indice_Tdegre();
             A->Visualisation_indice(choix_indice);
             A->Dessiner();
-            A->sauvgarder();
+            A->sauvgarder(choix_indice);
 
 
             break;
 
         case 2 : /// Indice centralite de degres propre
 
-
-
-            break;
+            A->calcul_vecteur_propre();
+            A->affi_indice_Tvecteur();
+            A->Visualisation_indice(choix_indice);
+            A->Dessiner();
+            A->sauvgarder(choix_indice);
 
 
 
             break ;
 
         case 3 : /// Indice de proximite
+
+            A->calcul_indice_proximite();
+            A->affi_indice_Tproximite();
+            A->Visualisation_indice(choix_indice);
+            A->Dessiner();
+            A->sauvgarder(choix_indice);
 
 
             break;
@@ -124,31 +152,24 @@ Graphe* menu(Graphe* A)
 }
 
 
-
-
-
-
-Graphe* Chargement_Graphe() ///SS Chargement d'un graphe depuis fichier
+Graphe* Chargement_Graphe(std::string fichier_topo, std::string fichier_ponde)  ///SS Chargement d'un graphe depuis fichier
 {
 
     Graphe* B{};
+    std::string temp_topo,temp_pond;
 
-    BITMAP* page ;
-    int i;
-    std::string fichier_topo;
-    std::string fichier_ponde;
-
-    std::cout<<"Nom du fichier de topologie : ";
-    // std::cin>>fichier_topo;
-    std::cout<<"Nom du fichier de ponderations : ";
-    //  std::cin>>fichier_ponde;
+    std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
 
     fichier_ponde="poids2bis.txt"; /// A vire a la fin
     fichier_topo="graphe2.txt";
 
-    std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
+    //temp_topo=fichier_topo+".txt";
+    //temp_pond=fichier_ponde+".txt";
 
-    B=new Graphe{fichier_topo,fichier_ponde}; /// Allocation du graphe
+
+    std::cout<<temp_topo;
+
+    B=new Graphe{temp_topo,temp_pond}; /// Allocation du graphe
 
     B->Dessiner();
     B->afficher();
@@ -156,3 +177,4 @@ Graphe* Chargement_Graphe() ///SS Chargement d'un graphe depuis fichier
     return B;
 
 }
+

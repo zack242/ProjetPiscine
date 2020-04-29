@@ -102,7 +102,7 @@ public :
     {
         std::cout<<"     sommet "<<m_nom<<"-"<<m_num<<" Coords : "<<m_x<<" ; "<<m_y<<" : ";
         for (auto s : m_successeurs)
-            std::cout<<s.first->getNum()<<" ";
+            std::cout<<s.first->getNum()<<" ("<<s.second<<") ";
     }
 
 
@@ -152,6 +152,8 @@ private :
     ///liste des sommets (vecteur de pointeurs sur Sommet)
     std::vector<Sommet*> m_sommets;
     int m_orientation;
+
+    std::string nomFichier;
 
 
 public :
@@ -334,6 +336,19 @@ public :
 
     }
 
+    void setnomFichier(std::string fichier)
+    {
+
+    nomFichier=fichier;
+
+    }
+
+    std::string getFichier()
+    {
+        return nomFichier;
+    }
+
+
     void calcul_indice_degres() ;
     void Visualisation_indice(int i);
     void affi_indice_Tdegre() const ;
@@ -342,9 +357,7 @@ public :
 ///Proto
 Graphe* menu(Graphe* A);
 
-Graphe* Chargement_Graphe();
-
-Graphe* Changement_Graphe_ponderation();
+Graphe* Chargement_Graphe(std::string fichier_topo,std::string fichier_pondo);
 
 
 

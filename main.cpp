@@ -6,10 +6,10 @@ using namespace std;
 int main()
 {
     allegro_init();
-
     Graphe* A{};
 
-    cout << "--Projet Theorie des graphes-- \n" << endl;
+
+ cout << "--Projet Theorie des graphes-- \n" << endl;
 
     while(!0)
         A=menu(A);
@@ -26,6 +26,9 @@ Graphe* menu(Graphe* A)
 {
 
     int choix=0,choix_indice=0,choix_action=0 ;
+    std::string fichier_topo;
+    std::string fichier_ponde;
+
 
 
     std::cout<<"\n          Menu \n\n";
@@ -46,13 +49,28 @@ Graphe* menu(Graphe* A)
 
     case 1 : ///Chargement du graphe
 
-        A=Chargement_Graphe();
+
+        std::cout<<"Nom du fichier de topologie : ";
+        std::cin>>fichier_topo;
+        std::cout<<"Nom du fichier de ponderations : ";
+        std::cin>>fichier_ponde;
+
+        A=Chargement_Graphe(fichier_topo,fichier_ponde);
+        A->setnomFichier(fichier_topo);
 
         break;
 
     case 2 : ///Chargement du systeme de ponderation
 
-           A=Changement_Graphe_ponderation();
+        fichier_topo=A->getFichier();
+        std::cout<<"Nom du fichier de ponderations : ";
+        std::cin>>fichier_ponde;
+
+        A=Chargement_Graphe(fichier_topo,fichier_ponde);
+        A->setnomFichier(fichier_topo);
+
+        break;
+
 
     case 3 : /// Calculer , afficher , Saivgarder
 
@@ -88,6 +106,7 @@ Graphe* menu(Graphe* A)
 
 
 
+
             break ;
 
         case 3 : /// Indice de proximite
@@ -119,31 +138,20 @@ Graphe* menu(Graphe* A)
 }
 
 
-
-
-
-
-Graphe* Chargement_Graphe() ///SS Chargement d'un graphe depuis fichier
+Graphe* Chargement_Graphe(std::string fichier_topo, std::string fichier_ponde)  ///SS Chargement d'un graphe depuis fichier
 {
 
     Graphe* B{};
-
-    BITMAP* page ;
-    int i;
-    std::string fichier_topo;
-    std::string fichier_ponde;
-
-    std::cout<<"Nom du fichier de topologie : ";
-    // std::cin>>fichier_topo;
-    std::cout<<"Nom du fichier de ponderations : ";
-    //  std::cin>>fichier_ponde;
-
-    fichier_ponde="poids.txt"; /// A vire a la fin
-    fichier_topo="graphe.txt";
+    std::string temp_topo,temp_pond;
 
     std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
 
-    B=new Graphe{fichier_topo,fichier_ponde}; /// Allocation du graphe
+    temp_topo=fichier_topo+".txt";
+    temp_pond=fichier_ponde+".txt";
+
+    std::cout<<temp_topo;
+
+    B=new Graphe{temp_topo,temp_pond}; /// Allocation du graphe
 
     B->Dessiner();
     B->afficher();
@@ -152,29 +160,3 @@ Graphe* Chargement_Graphe() ///SS Chargement d'un graphe depuis fichier
 
 }
 
-Graphe* Changement_Graphe_ponderation()
-
-{
-
-  Graphe* B{};
-
-    BITMAP* page ;
-    int i;
-    std::string fichier_ponde;
-    std::string fichier_topo;
-
-    std::cout<<"Nom du fichier de ponderations : ";
-    std::cin>>fichier_ponde;
-
-    fichier_topo="graphe.txt";
-
-    std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
-
-    B=new Graphe{fichier_topo,fichier_ponde}; /// Allocation du graphe
-
-    B->Dessiner();
-    B->afficher();
-
-    return B;
-
-}

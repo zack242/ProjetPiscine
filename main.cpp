@@ -86,6 +86,8 @@ Graphe* menu(Graphe* A)
 
         case 2 : /// Indice centralite de degres propre
 
+        A->calcul_vecteur_propre();
+
 
 
             break;

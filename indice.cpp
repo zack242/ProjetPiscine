@@ -241,6 +241,7 @@ void Sommet::indice_centralite(float ordre,float indicenn)
     m_indice.intermediaire_nomralise=(indicenn/normalisation);
     std::cout<<"normalise : "<<m_indice.intermediaire_nomralise<<" nn : "<<m_indice.intermediaire_non_normamise<< std::endl;
 }
+
 void Graphe::centraliteintermediarite()const
 {
 

@@ -14,7 +14,7 @@
 
 
 
-float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[10][10],int p);
+float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[100][100],int p);
 struct indice
 {
     float degre_non_normamise,degre_nomralise;

@@ -19,8 +19,10 @@ struct indice
 {
     float degre_non_normamise,degre_nomralise;
     float vecteur;
-    float proximite;
+
     float intermediaire_nomralise, intermediaire_non_normamise;
+    float proximite_normalise,proximite_non_normalise;
+
 };
 
 
@@ -85,7 +87,7 @@ public :
             return m_indice.vecteur;
 
         case 3 :
-            return m_indice.proximite;
+            return m_indice.proximite_normalise;
 
 
 
@@ -108,11 +110,19 @@ public :
 
     }
 
-    void setIndice_proximite(float indice)
+    void setIndice_proximite(float indice,int choix)
     {
 
-        m_indice.proximite=indice;
+      switch(choix){
+      case 1 :
+        m_indice.proximite_normalise=indice;
+        break;
 
+      case 2 :
+          m_indice.proximite_non_normalise=indice;
+        break;
+
+    }
     }
 
     void setsucc(std::map<const Sommet*,int> succ)
@@ -181,7 +191,7 @@ public :
             break;
 
         case 3 :
-            ofs << m_num <<" "<<m_indice.proximite <<std::endl ;
+            ofs << m_num <<" "<<m_indice.proximite_normalise <<" "<<m_indice.proximite_normalise<< std::endl ;
             break;
 
 
@@ -255,7 +265,7 @@ public :
 
             std::string nom ;
             ifs >> nom ;
-            std::cout<<nom<<std::endl;
+           // std::cout<<nom<<std::endl;
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture du nom du sommet");
 

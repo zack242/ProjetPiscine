@@ -149,18 +149,18 @@ public :
     {
         const char *nom = m_nom.c_str();
 
-        textprintf_ex(bmp,font,m_x*10,m_y*10-30,makecol(0,0,0),-1,nom);
+        textprintf_ex(bmp,font,m_x+250,m_y+250-30,makecol(0,0,0),-1,nom);
 
 
         for (auto s : m_successeurs) ///Dessin des Arcs
         {
-            line(bmp,m_x*10,m_y*10,s.first->getX()*10,s.first->getY()*10,makecol(255,0,0));
+            line(bmp,m_x+250,m_y+250,s.first->getX()+250,s.first->getY()+250,makecol(255,0,0));
 
         }
 
-        circlefill(bmp,m_x*10,m_y*10,10,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
+        circlefill(bmp,m_x+250,m_y+250,2,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
 
-        circlefill(bmp,m_x*10,m_y*10,3,makecol(0,0,0));
+        circlefill(bmp,m_x+250,m_y+250,0,makecol(0,0,0));
 
     }
 
@@ -252,6 +252,7 @@ public :
 
             std::string nom ;
             ifs >> nom ;
+            std::cout<<nom<<std::endl;
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture du nom du sommet");
 

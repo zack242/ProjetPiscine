@@ -52,11 +52,11 @@ Graphe* menu(Graphe* A)
 
 
         std::cout<<"Nom du fichier de topologie : ";
-       // std::cin>>fichier_topo;
+        std::cin>>fichier_topo;
         std::cout<<"Nom du fichier de ponderations : ";
-      //  std::cin>>fichier_ponde;
-      fichier_ponde="poids";
-      fichier_topo="graphe";
+        std::cin>>fichier_ponde;
+     // fichier_ponde="poids";
+      //fichier_topo="graphe";
 
         A=Chargement_Graphe(fichier_topo,fichier_ponde);
         A->setnomFichier(fichier_topo);

@@ -1,6 +1,70 @@
 #include <iostream>
 #include "header.h"
 
+float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[100][100],int p)
+{
+    float ca[taille][taille],cb[taille][taille],tot;
+    float nbtotal=0;
+
+//transfert de notre matrice dans une matrice de calcul
+    for(int i=0; i<taille; i++)
+    {
+        for(int j=0; j<taille; j++)
+        {
+            ca[i][j]=matrice[i][j];
+        }
+    }
+//si la puissance demander vaut 1 on affiche juste
+    if(p==1)
+    {
+    }
+    else
+    {
+
+        for(int v=0; v<p-1; v++)
+        {
+            for(int i=0; i<taille; i++)
+            {
+                for(int j=0; j<taille; j++)
+                {
+                    cb[i][j]=ca[i][j];
+                }
+            }
+
+            for(int i=0; i<taille; i++)
+            {
+
+                for(int j=0; j<taille; j++)
+                {
+                    tot=0;
+                    for(int k=0; k<taille; k++)
+                    {
+                        tot=tot+(cb[i][k]*matrice[k][j]);
+                    }
+
+                    ca[i][j]=tot;
+                }
+            }
+
+        }
+
+    }
+
+    nbtotal=ca[sum_1][sum_2];
+    /*
+        std::cout<<"ligne : "<<sum_1<<" ,colonne : "<<sum_2<<" ,valeur : "<<nbtotal<<" ,puisance : "<<p<<std::endl;
+    for (int i = 0; i < taille; i++)
+    {
+        for (int j = 0; j < taille; j++)
+        {
+            std::cout<<ca[i][j]<<" ";
+        }
+         std::cout << std::endl;
+    }
+*/
+    return nbtotal;
+}
+
 //////////////////////////////////////////////// Indice de degre
 
 void Sommet::indice_degre(float ordre)

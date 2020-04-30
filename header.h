@@ -8,6 +8,10 @@
 #include <stdio.h>
 #include <algorithm>
 #include <string>
+#include <queue>
+#include <limits>
+
+
 
 
 
@@ -16,6 +20,7 @@ struct indice
     float degre_non_normamise,degre_nomralise;
     float vecteur;
     float proximite;
+    float intermediaire_nomralise, intermediaire_non_normamise;
 };
 
 
@@ -194,6 +199,8 @@ public :
     void affi_indice_vecteur() const;
 
     void affi_indice_proximite() const;
+
+    void indice_centralite(float ordre,float indicenn);
 
 
 };
@@ -441,6 +448,8 @@ public :
     void TestVulnerabilite() ;
     Graphe* Sup_aretes();
     void ComparaisonIndice();
+    std::vector<std::pair<int,int>> Dijkstra(int num_s0)const;
+    void centraliteintermediarite()const;
 
 };
 

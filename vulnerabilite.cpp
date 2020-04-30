@@ -44,11 +44,13 @@ void Graphe::GrapheConnexe()
 }
 
 
+
 void Graphe::TestVulnerabilite()
 {
 
     std::vector<int> t_indice;
     std::map<const Sommet*,int> succes;
+    std::map<const Sommet*,int> temp;
 
 
     std::cout<<"Arrets : \n";
@@ -67,42 +69,46 @@ void Graphe::TestVulnerabilite()
         t_indice.push_back(indice);
 
     }
+
     t_indice.pop_back();
 
 
     for(auto s : m_sommets)
     {
 
-
-       // std::cout<<"ououou "<< s->getNum() << " - "<<m_arrets[t_indice.back()].first<<std::endl;
-
         if( s->getNum() == m_arrets[t_indice.back()].first  )
         {
 
-            succes=s->getSuccesseurs();
-
-            for(auto succ : succes)
+            for(auto succ : s->getSuccesseurs())
             {
-                std::cout<<m_arrets[t_indice.back()].first<<"oooo "<< succ.first->getNum() <<"\n";
 
-                if (succ.first->getNum()== m_arrets[t_indice.back()].second)
+                for(int z=0; z < t_indice.size(); z++ )
                 {
-                    std::cout<<"ppppppppppppppppppp";
-                    succes.erase(succ);
 
-                    t_indice.pop_back();
+                    std::cout<<m_arrets[t_indice.back()].first<<"oooo "<< succ.first->getNum() <<"\n";
+
+                    if (succ.first->getNum() == m_arrets[t_indice.back()].second)
+                    {
+
+                        std::cout<<t_indice.back()<<"\n";
+                        t_indice.pop_back();
+                        std::cout<<t_indice.back()<<"\n";
+
+                    }
+                    else
+                    {
+
+                        temp[succ.first]=succ.second;
+
+                    }
+
                 }
-
 
             }
 
         }
 
     }
-
-
-
-
 
 }
 

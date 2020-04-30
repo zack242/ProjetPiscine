@@ -58,7 +58,7 @@ Graphe* menu(Graphe* A)
       fichier_ponde="poids";
     fichier_topo="graphe";
 
-
+////ouhhhhhh
         A=Chargement_Graphe(fichier_topo,fichier_ponde);
         A->setnomFichier(fichier_topo);
 

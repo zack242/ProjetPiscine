@@ -25,9 +25,10 @@ END_OF_MAIN();
 Graphe* menu(Graphe* A)
 {
 
-    int choix=0,choix_indice=0,choix_action=0 ;
+    int choix=0,choix_indice=0,choix_action=0,choix_vulnerabilite=0 ;
     std::string fichier_topo;
     std::string fichier_ponde;
+
 
 
 
@@ -143,11 +144,30 @@ Graphe* menu(Graphe* A)
         break;
 
         case 4 :
+            std::cout<<"\n1/ Test de la connexite du graphe \n";
+            std::cout<<"2/ Suppression d’une ou plusieurs arêtes \n \n ";
+            std::cout<<"Votre choix : ";
 
-            A->GrapheConnexe();
-            A->TestVulnerabilite();
+            std::cin>>choix_vulnerabilite;
+             std::cout<<"\n";
+
+            switch(choix_vulnerabilite)
+            {
+
+       case 1 :
+
+        A->GrapheConnexe();
+
+        break;
+
+        case 2 :
+
+            A->Sup_aretes();
+            A->ComparaisonIndice();
             A->Dessiner();
-            A->afficher();
+            break;
+
+            }
 
             break;
 
@@ -174,7 +194,6 @@ Graphe* Chargement_Graphe(std::string fichier_topo, std::string fichier_ponde)  
     temp_topo=fichier_topo+".txt";
     temp_pond=fichier_ponde+".txt";
 
-    std::cout<<temp_topo;
 
     B=new Graphe{temp_topo,temp_pond}; /// Allocation du graphe
 

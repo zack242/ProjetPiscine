@@ -30,6 +30,8 @@ Graphe* menu(Graphe* A)
     std::string fichier_ponde;
 
 
+
+
     std::cout<<"\n          Menu \n\n";
 
     std::cout<<"1/Chargement d'un Graphe. \n";

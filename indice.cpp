@@ -43,6 +43,350 @@ void Graphe::affi_indice_Tdegre() const
 //////////////////////////////////////////////////////////////////// Indice Vecteur propre
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void Graphe::calcul_vecteur_propre()
 {
 
@@ -213,12 +557,7 @@ std::vector<int> Graphe::AlegoDjiskra(int num_D) // Alego de Djiskra
         }
         while(M==true); // tant que tout les sommets ne sont pas marque
         int i=0;
-         for(auto s :m_sommets)
-            {
-         //     std::cout<<"Distance "<<s->getNom()<<": "<<distance[i]<<"\n";
-              total+=distance[i];
-              i++;
-         }
+
 
    // distance_min=distance[num_F]; // On affect la distance min
 
@@ -237,14 +576,18 @@ for(auto s : m_sommets)
 {
     temp=0;
     preds=AlegoDjiskra(s->getNum());
+    for(auto k : preds)
+        std::cout<<k<<std::endl;
 
        for(int i=0 ; i<preds.size();i++)
         {
         temp+=preds[i];
       //  std::cout<<"\n temp "<<temp<<"preds "<<preds[i];
         }
+        std::cout<<(m_taille-1)/temp<<" -----------------\n";
 
-       s->setIndice_proximite((m_taille-1)/temp);
+       s->setIndice_proximite((m_taille-1)/temp,1);
+       s->setIndice_proximite(temp,2);
 
 }
 
@@ -254,7 +597,8 @@ for(auto s : m_sommets)
 void Sommet::affi_indice_proximite() const
 {
     std::cout<<"Sommet : "<<m_nom<< std::endl;
-    std::cout<<"Indice  : "<<m_indice.proximite<<"\n" ;
+    std::cout<<"Indice normalise  : "<<m_indice.proximite_normalise<<"\n" ;
+    std::cout<<"Indice non  normalise  : "<<m_indice.proximite_non_normalise<<"\n" ;
 
 }
 

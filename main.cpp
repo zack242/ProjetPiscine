@@ -145,6 +145,7 @@ Graphe* menu(Graphe* A)
         case 4 :
 
             A->GrapheConnexe();
+            A->TestVulnerabilite();
 
             break;
 

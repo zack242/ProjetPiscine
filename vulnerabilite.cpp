@@ -11,9 +11,9 @@ void Graphe::GrapheConnexe()
     int k=0;
     bool check=true ;
 
-   while(check!=false)
+    while(check!=false)
     {
-       std::cout<<"Composant Connexe : ";
+        std::cout<<"Composant Connexe : ";
         check=false;
         distance=AlegoDjiskra(NonSommet);
 
@@ -38,9 +38,71 @@ void Graphe::GrapheConnexe()
 
     }
 
+    if(k==1)
+        std::cout<<"Graphe Connexe \n";
+
 }
 
 
+void Graphe::TestVulnerabilite()
+{
+
+    std::vector<int> t_indice;
+    std::map<const Sommet*,int> succes;
 
 
+    std::cout<<"Arrets : \n";
+
+    for(int i =0 ; i<m_arrets.size() ; i++)
+        std::cout<<"Indice : "<<i<<" : "<<m_arrets[i].first<<"-"<<m_arrets[i].second<<std::endl;
+
+    int indice;
+
+    while(indice!=99)
+    {
+        std::cout<<"\n99 / Pour quitter la saisie \n ";
+        std::cout<<"Saisir l'indice des aretes a supprimer \n";
+
+        std::cin>>indice;
+        t_indice.push_back(indice);
+
+    }
+    t_indice.pop_back();
+
+
+    for(auto s : m_sommets)
+    {
+
+
+       // std::cout<<"ououou "<< s->getNum() << " - "<<m_arrets[t_indice.back()].first<<std::endl;
+
+        if( s->getNum() == m_arrets[t_indice.back()].first  )
+        {
+
+            succes=s->getSuccesseurs();
+
+            for(auto succ : succes)
+            {
+                std::cout<<m_arrets[t_indice.back()].first<<"oooo "<< succ.first->getNum() <<"\n";
+
+                if (succ.first->getNum()== m_arrets[t_indice.back()].second)
+                {
+                    std::cout<<"ppppppppppppppppppp";
+                    succes.erase(succ);
+
+                    t_indice.pop_back();
+                }
+
+
+            }
+
+        }
+
+    }
+
+
+
+
+
+}
 

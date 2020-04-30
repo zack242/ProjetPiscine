@@ -200,6 +200,7 @@ private :
 
     ///liste des sommets (vecteur de pointeurs sur Sommet)
     std::vector<Sommet*> m_sommets;
+    std::vector<std::pair<int,int>> m_arrets;
     int m_orientation;
     int m_taille;
 
@@ -274,15 +275,18 @@ public :
 
         int num1,num2,index,poids;
 
+        std::vector<std::pair<int,int>> arrets(m_taille);
 
         for (int i=0; i<taille_topo; ++i)
         {
             ifs>>index>>num1>>num2;
             ifp>>index>>poids;
 
+            arrets[i].first=num1;
+            arrets[i].second=num2;
+
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture arc");
-
 
             m_sommets[num1]->ajouterSucc(m_sommets[num2],poids);
             ///si le graphe n'est pas orienté
@@ -290,8 +294,10 @@ public :
             if(!m_orientation)
                 m_sommets[num2]->ajouterSucc(m_sommets[num1],poids);
 
-
         }
+
+          m_arrets=arrets;
+
 
         ///Partie Initialisation
 
@@ -422,6 +428,7 @@ public :
     void calcul_indice_proximite();
     void affi_indice_Tproximite() const;
     void GrapheConnexe();
+    void TestVulnerabilite() ;
 };
 
 ///Proto

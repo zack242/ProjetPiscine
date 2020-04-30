@@ -6,23 +6,16 @@
 #include <fstream>
 #include <allegro.h>
 #include <stdio.h>
-#include <queue>
-#include <string>
-#include <limits>
 #include <algorithm>
 #include <string>
 
 
 
-float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[100][100],int p);
 struct indice
 {
     float degre_non_normamise,degre_nomralise;
-    float intermediaire_non_normamise,intermediaire_nomralise;
-
     float vecteur;
     float proximite;
-
 };
 
 
@@ -117,6 +110,13 @@ public :
 
     }
 
+    void setsucc(std::map<const Sommet*,int> succ)
+    {
+
+        m_successeurs=succ;
+
+    }
+
 
     ///accesseur : pour la liste des successeurs
     const std::map<const Sommet*,int>& getSuccesseurs()const
@@ -145,18 +145,18 @@ public :
     {
         const char *nom = m_nom.c_str();
 
-        textprintf_ex(bmp,font,m_x*10,m_y*10-30,makecol(0,0,0),-1,nom);
+        textprintf_ex(bmp,font,m_x+250,m_y+250-30,makecol(0,0,0),-1,nom);
 
 
         for (auto s : m_successeurs) ///Dessin des Arcs
         {
-            line(bmp,m_x*10,m_y*10,s.first->getX()*10,s.first->getY()*10,makecol(255,0,0));
+            line(bmp,m_x+250,m_y+250,s.first->getX()+250,s.first->getY()+250,makecol(255,0,0));
 
         }
 
-        circlefill(bmp,m_x*10,m_y*10,10,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
+        circlefill(bmp,m_x+250,m_y+250,2,makecol(m_couleur,0,0)); ///Cercle pour la visu des indices
 
-        circlefill(bmp,m_x*10,m_y*10,3,makecol(0,0,0));
+        circlefill(bmp,m_x+250,m_y+250,0,makecol(0,0,0));
 
     }
 
@@ -179,9 +179,7 @@ public :
             ofs << m_num <<" "<<m_indice.proximite <<std::endl ;
             break;
 
-        ofs << m_num <<" "<<m_indice.degre_nomralise<<" "<<m_indice.degre_non_normamise <<" " ;
 
-        ofs << m_num <<" "<<m_indice.intermediaire_nomralise<<" "<<m_indice.intermediaire_non_normamise << std::endl ;
 
 
         }
@@ -191,8 +189,6 @@ public :
 
     void indice_degre(float ordre);
     void  affi_degre_sommmet() const  ;
-
-    void indice_centralite(float ordre,float indicenn);
 
     void Calcul_indice_adjac() ;
     void affi_indice_vecteur() const;
@@ -211,6 +207,7 @@ private :
 
     ///liste des sommets (vecteur de pointeurs sur Sommet)
     std::vector<Sommet*> m_sommets;
+    std::vector<std::pair<int,int>> m_arrets;
     int m_orientation;
     int m_taille;
 
@@ -251,6 +248,7 @@ public :
 
             std::string nom ;
             ifs >> nom ;
+            std::cout<<nom<<std::endl;
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture du nom du sommet");
 
@@ -285,15 +283,18 @@ public :
 
         int num1,num2,index,poids;
 
+        std::vector<std::pair<int,int>> arrets(m_taille);
 
         for (int i=0; i<taille_topo; ++i)
         {
             ifs>>index>>num1>>num2;
             ifp>>index>>poids;
 
+            arrets[i].first=num1;
+            arrets[i].second=num2;
+
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture arc");
-
 
             m_sommets[num1]->ajouterSucc(m_sommets[num2],poids);
             ///si le graphe n'est pas orienté
@@ -301,8 +302,10 @@ public :
             if(!m_orientation)
                 m_sommets[num2]->ajouterSucc(m_sommets[num1],poids);
 
-
         }
+
+          m_arrets=arrets;
+
 
         ///Partie Initialisation
 
@@ -394,7 +397,6 @@ public :
             break ;
 
         case 4 :
-
             nomFichier="indice_intermediaire.txt";
             break ;
         }
@@ -418,6 +420,8 @@ public :
 
     }
 
+
+
     std::string getFichier()
     {
         return nomFichier;
@@ -425,20 +429,18 @@ public :
 
 
     void calcul_indice_degres() ;
-
-
-std::vector<std::pair<int,int>> Dijkstra(int num_s0)const;
-void centraliteintermediarite()const;
-
     void Visualisation_indice(int i);
     void affi_indice_Tdegre() const ;
-
     void calcul_vecteur_propre() ;
     void DFS(int num_S,std::vector<int> couleurs);
     void affi_indice_Tvecteur() const;
-    float AlegoDjiskra(int num_D);
+    std::vector<int> AlegoDjiskra(int num_D);
     void calcul_indice_proximite();
     void affi_indice_Tproximite() const;
+    void GrapheConnexe();
+    void TestVulnerabilite() ;
+    Graphe* Sup_aretes();
+    void ComparaisonIndice();
 
 };
 

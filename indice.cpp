@@ -1,81 +1,14 @@
 #include <iostream>
 #include "header.h"
 
-
-float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[100][100],int p)
-{
-    float ca[taille][taille],cb[taille][taille],tot;
-    float nbtotal=0;
-
-//transfert de notre matrice dans une matrice de calcul
-    for(int i=0; i<taille; i++)
-    {
-        for(int j=0; j<taille; j++)
-        {
-            ca[i][j]=matrice[i][j];
-        }
-    }
-//si la puissance demander vaut 1 on affiche juste
-    if(p==1)
-    {
-    }
-    else
-    {
-
-        for(int v=0; v<p-1; v++)
-        {
-            for(int i=0; i<taille; i++)
-            {
-                for(int j=0; j<taille; j++)
-                {
-                    cb[i][j]=ca[i][j];
-                }
-            }
-
-            for(int i=0; i<taille; i++)
-            {
-
-                for(int j=0; j<taille; j++)
-                {
-                    tot=0;
-                    for(int k=0; k<taille; k++)
-                    {
-                        tot=tot+(cb[i][k]*matrice[k][j]);
-                    }
-
-                    ca[i][j]=tot;
-                }
-            }
-
-        }
-
-    }
-
-    nbtotal=ca[sum_1][sum_2];
-    /*
-        std::cout<<"ligne : "<<sum_1<<" ,colonne : "<<sum_2<<" ,valeur : "<<nbtotal<<" ,puisance : "<<p<<std::endl;
-    for (int i = 0; i < taille; i++)
-    {
-        for (int j = 0; j < taille; j++)
-        {
-            std::cout<<ca[i][j]<<" ";
-        }
-         std::cout << std::endl;
-    }
-*/
-    return nbtotal;
-}
-
 //////////////////////////////////////////////// Indice de degre
 
 void Sommet::indice_degre(float ordre)
 {
     int nbrsucc=0;
 
-
     for( auto s : m_successeurs)
         nbrsucc++;
-
 
     m_indice.degre_non_normamise=nbrsucc;
     m_indice.degre_nomralise=(nbrsucc/ordre);
@@ -328,6 +261,7 @@ void Graphe::centraliteintermediarite()const
 
 
 
+
 void Graphe::affi_indice_Tdegre() const
 {
     for (auto s : m_sommets)
@@ -359,7 +293,7 @@ void Graphe::calcul_vecteur_propre()
     do
     {
 
-        lamdatemp=lamda;
+          lamdatemp=lamda;
 
         k=0;
         S_total=0;
@@ -391,8 +325,7 @@ void Graphe::calcul_vecteur_propre()
         }
 
 
-    }
-    while(lamda != lamdatemp);
+    }while(lamda != lamdatemp);
 
 }
 
@@ -417,128 +350,129 @@ void Graphe::affi_indice_Tvecteur() const
 
 
 
-float Graphe::AlegoDjiskra(int num_D) // Alego de Djiskra
-{
-
-    //tableau pour le marquage ;
-    std::vector<int> marquage((int)m_sommets.size(),0);
-    //tableau des distances
-    std::vector<int> distance((int)m_sommets.size(),999);
-    //tableau des preds
-    std::vector<int> preds((int)m_sommets.size(),-1);
-
-
-    int num_F=5;
-    bool M = false; //booleen pour savoir si tout les sommets sont marquees
-    int temp=999; // Utiliser pour determiner le min
-    int index=0;
-    float total=0;
-
-    distance[num_D]=0; //Initialisation de la distance du Sommet 0 a 0
-    const Sommet* k;
-
-
-
-    for(auto z : m_sommets) //On met a jour les distances des adjacents
+std::vector<int> Graphe::AlegoDjiskra(int num_D) // Alego de Djiskra
     {
-        if(z->getNum()==num_D)
+
+        //tableau pour le marquage ;
+        std::vector<int> marquage((int)m_sommets.size(),0);
+        //tableau des distances
+        std::vector<int> distance((int)m_sommets.size(),999);
+        //tableau des preds
+        std::vector<int> preds((int)m_sommets.size(),-1);
+
+
+        int num_F=5;
+        bool M = false; //booleen pour savoir si tout les sommets sont marquees
+        int temp=999; // Utiliser pour determiner le min
+        int index=0;
+        float total=0;
+
+        distance[num_D]=0; //Initialisation de la distance du Sommet 0 a 0
+        const Sommet* k;
+
+
+
+        for(auto z : m_sommets) //On met a jour les distances des adjacents
         {
-            for(auto succ : z->getSuccesseurs())
+            if(z->getNum()==num_D)
             {
-                distance[succ.first->getNum()]=succ.second;
-            }
-            marquage[num_D]=1; // On  marque le sommet s0
-
-        }
-
-    }
-
-
-    do
-    {
-        M=false;
-
-        for(int i=0 ; i<distance.size(); i++) // On cherche le sommets avec la plus petite distance
-        {
-            if(marquage[i]==0 && i!=num_D)
-            {
-
-                if(distance[i]<=temp)
+                for(auto succ : z->getSuccesseurs())
                 {
-                    temp=distance[i];
-                    index=i;
-
+                    distance[succ.first->getNum()]=succ.second;
                 }
-
-                M=true;
+                marquage[num_D]=1; // On  marque le sommet s0
 
             }
 
         }
 
-        for(auto s : m_sommets)
-            if(s->getNum()==index) //On recherche le pointeur Sommet¨* le plus proche de s0
-                k=s;
 
-        if(M==true)
-            distance[index]=temp;
-
-        marquage[index]=1;
-
-
-
-        for(auto X : k->getSuccesseurs())
+        do
         {
+            M=false;
 
-            if(marquage[X.first->getNum()]==0)
+            for(int i=0 ; i<distance.size(); i++) // On cherche le sommets avec la plus petite distance
             {
-
-                if(distance[k->getNum()]+X.second<distance[X.first->getNum()]) //Si le chemin est plus court on le met a jour
+                if(marquage[i]==0 && i!=num_D)
                 {
-                    distance[X.first->getNum()]=distance[k->getNum()]+X.second;
-                    // std::cout<<k->getNum()<<"-->"<<X.first->getNum()<<std::endl;
-                    //  preds[k->getNum()]=X.first->getNum();
+
+                    if(distance[i]<=temp)
+                    {
+                        temp=distance[i];
+                        index=i;
+
+                    }
+
+                    M=true;
 
                 }
 
             }
 
+            for(auto s : m_sommets)
+                if(s->getNum()==index) //On recherche le pointeur Sommet¨* le plus proche de s0
+                    k=s;
+
+            if(M==true)
+                distance[index]=temp;
+
+            marquage[index]=1;
+
+
+
+            for(auto X : k->getSuccesseurs())
+            {
+
+                if(marquage[X.first->getNum()]==0)
+                {
+
+                    if(distance[k->getNum()]+X.second<distance[X.first->getNum()]) //Si le chemin est plus court on le met a jour
+                    {
+                        distance[X.first->getNum()]=distance[k->getNum()]+X.second;
+                        // std::cout<<k->getNum()<<"-->"<<X.first->getNum()<<std::endl;
+                       //  preds[k->getNum()]=X.first->getNum();
+
+                    }
+
+                }
+
+
+            }
+
+            temp=999;
+
+
 
         }
-
-        temp=999;
-
+        while(M==true); // tant que tout les sommets ne sont pas marque
 
 
-    }
-    while(M==true); // tant que tout les sommets ne sont pas marque
-    int i=0;
-    for(auto s :m_sommets)
-    {
-        //     std::cout<<"Distance "<<s->getNom()<<": "<<distance[i]<<"\n";
-        total+=distance[i];
-        i++;
-    }
 
-    // distance_min=distance[num_F]; // On affect la distance min
-
-    return total;
+return distance;
 
 }
 
 
 
-
 void Graphe::calcul_indice_proximite()
 {
-    float temp;
-    for(auto s : m_sommets)
-    {
-        s->setIndice_proximite((m_taille-1)/AlegoDjiskra(s->getNum()));
-        std::cout<<"\n Sommet "<<s->getNom()<<"Indice : "<<s->getIndice(3);
-        //temp=(m_taille-1)/(AlegoDjiskra(s->getNum()));
+float temp;
+std::vector<int> preds;
 
-    }
+for(auto s : m_sommets)
+{
+    temp=0;
+    preds=AlegoDjiskra(s->getNum());
+
+       for(int i=0 ; i<preds.size();i++)
+        {
+        temp+=preds[i];
+      //  std::cout<<"\n temp "<<temp<<"preds "<<preds[i];
+        }
+
+       s->setIndice_proximite((m_taille-1)/temp);
+
+}
 
 }
 
@@ -558,7 +492,6 @@ void Graphe::affi_indice_Tproximite() const
         std::cout<<std::endl;
     }
 }
-
 
 
 

@@ -1,0 +1,103 @@
+0
+25
+0	La_Defense_Grande_Arche	41	61
+
+1	Esplanade_de_la_Defense	79	57
+
+2	Pont_de_Neuilly	88	52
+
+3	Les_Sablons	96	48
+
+4	Porte_Maillot	74	44
+
+5	Argentine	109	42
+
+6	Charles_De_Gaulle-Etoile	114	41
+
+7	George-V	117	38
+
+8	Franklin_D.Roosevelt	122	35
+
+9	Champs-Elysees-Clemenceau	126	33
+
+10	Concorde	133	31
+
+11	Tuileries	139	29
+
+12	Palais_Royal-Musee_du_Louvre	143	27
+
+13	Louvre-Rivoli	147	25
+
+14	Chatelet	151	23
+
+15	Hotel_de_Ville	154	21
+
+16	Saint-Paul	161	19
+
+17	Bastille	167	16
+
+18	Gare_de_Lyon	171	8
+
+19	Porte_de_Vincennes	197	10
+
+20	Saint-Mande	204	9
+
+21	Berault	211	8
+
+22	Chateau_de_Vincennes	219	6
+
+23	Nation	186	10
+
+24	Reuilly-Diderot	180	10
+25
+0	0	1
+
+1	1	2
+
+2	2	3
+
+3	3	4
+
+4	4	5
+
+5	5	6
+
+6	6	7
+
+7	7	8
+
+8	8	9
+
+9	9	10
+
+10	10	11
+
+11	11	12
+
+12	12	13
+
+13	13	14
+
+14	14	15
+
+15	15	16
+
+16	16	17
+
+17	17	18
+
+18	18	24
+
+19	19	20
+
+20	20	21
+
+21	21	22
+
+22	22	22
+
+23	23	19
+
+24	24	23
+
+

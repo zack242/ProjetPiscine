@@ -439,6 +439,9 @@ public :
     void affi_indice_Tproximite() const;
     void GrapheConnexe();
     void TestVulnerabilite() ;
+    Graphe* Sup_aretes();
+    void ComparaisonIndice();
+
 };
 
 ///Proto

@@ -212,19 +212,12 @@ std::vector<int> Graphe::AlegoDjiskra(int num_D) // Alego de Djiskra
 
         }
         while(M==true); // tant que tout les sommets ne sont pas marque
-        int i=0;
-         for(auto s :m_sommets)
-            {
-         //     std::cout<<"Distance "<<s->getNom()<<": "<<distance[i]<<"\n";
-              total+=distance[i];
-              i++;
-         }
 
-   // distance_min=distance[num_F]; // On affect la distance min
+
 
 return distance;
 
-    }
+}
 
 
 

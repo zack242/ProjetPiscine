@@ -178,6 +178,7 @@ Graphe* Chargement_Graphe(std::string fichier_topo, std::string fichier_ponde)  
 
     std::cout<<temp_topo;
 
+
     B=new Graphe{temp_topo,temp_pond}; /// Allocation du graphe
 
     B->Dessiner();

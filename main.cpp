@@ -132,6 +132,7 @@ Graphe* menu(Graphe* A)
         case 4 : ///Centralite d'intermediaire
 
 
+            A->centraliteintermediarite();
             break;
 
 

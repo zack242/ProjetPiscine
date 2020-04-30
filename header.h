@@ -252,7 +252,7 @@ public :
 
             std::string nom ;
             ifs >> nom ;
-            std::cout<<nom<<std::endl;
+           // std::cout<<nom<<std::endl;
             if ( ifs.fail() )
                 throw std::runtime_error("Probleme lecture du nom du sommet");
 

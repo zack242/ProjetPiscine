@@ -577,14 +577,13 @@ for(auto s : m_sommets)
     temp=0;
     preds=AlegoDjiskra(s->getNum());
     for(auto k : preds)
-        std::cout<<k<<std::endl;
 
        for(int i=0 ; i<preds.size();i++)
         {
         temp+=preds[i];
       //  std::cout<<"\n temp "<<temp<<"preds "<<preds[i];
         }
-        std::cout<<(m_taille-1)/temp<<" -----------------\n";
+
 
        s->setIndice_proximite((m_taille-1)/temp,1);
        s->setIndice_proximite(temp,2);

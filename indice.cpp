@@ -37,21 +37,32 @@ float nbtopluscourtchemin(int sum_1, int sum_2,int taille,float matrice[100][100
 
                 for(int j=0; j<taille; j++)
                 {
-
+                    tot=0;
                     for(int k=0; k<taille; k++)
                     {
                         tot=tot+(cb[i][k]*matrice[k][j]);
                     }
 
-                    ca[j][i]=tot;
-                    tot=0;
+                    ca[i][j]=tot;
                 }
             }
 
         }
 
     }
+
     nbtotal=ca[sum_1][sum_2];
+    /*
+        std::cout<<"ligne : "<<sum_1<<" ,colonne : "<<sum_2<<" ,valeur : "<<nbtotal<<" ,puisance : "<<p<<std::endl;
+    for (int i = 0; i < taille; i++)
+    {
+        for (int j = 0; j < taille; j++)
+        {
+            std::cout<<ca[i][j]<<" ";
+        }
+         std::cout << std::endl;
+    }
+*/
     return nbtotal;
 }
 
@@ -150,58 +161,16 @@ std::vector<int> Graphe::Dijkstra(int num_s0)const
             }
         }
     }
-    /*for (auto i = 0; i<NbNodes; ++i)                                            // résultat
-    {
-        if(i !=num_s0 )
-        {
-            int pbis[NbNodes];
-            for(int j=0; j<NbNodes; ++j)
-            {
-                pbis[j]=-1;
-            }
-            std::cout << "\nnoeud  " << num_s0 << " au noeud " << i << " longueur :  " << Distances[i] << std::endl;
-            int k=1;
-            while(Parents[i][k]!= -1)
-            {
-                pbis[k-1]=Parents[i][k];
-                ++k;
-            }
-            std::cout << i;
-            for (auto p = Parents[i][0]; p != -1; p = Parents[p][0])
-            {
-                std::cout << " <- " << p;
-                if(pbis[0]!=-1)
-                {
-                    k=0;
-                    while (pbis[k]!= -1)
-                    {
-                        std::cout << " ( " << pbis[k]<<")";
-                        pbis[k]=-1;
-                        ++k;
-                    }
-                }
-                int l=1;
-                while (Parents[p][l]!= -1)
-                {
-                    //std::cout<<"test"<<std::endl;
-                    std::cout << " ( " << Parents[p][1]<<")";
-                    ++l;
-                }
-            }
-
-            std::cout << std::endl;
-        }
-    }*/
 
     int taille=0;
     int chemin_t[NbNodes] ;
     float matrice[100][100];
     for (int i = 0; i < NbNodes; i++)
     {
-        chemin_t[i]=0;
         for (int j = 0; j < NbNodes; j++)
         {
             matrice[i][j] = 0;
+            chemin_t[i]=0;
         }
     }
     for (int i = 0; i < NbNodes; i++)
@@ -219,14 +188,15 @@ std::vector<int> Graphe::Dijkstra(int num_s0)const
     {
         if(j !=num_s0 )
         {
-            for (int i = 0; i < taille; i++)
+            for (int i = 1; i < taille+1; i++)
             {
-            chemin_t[j]=chemin_t[j]+nbtopluscourtchemin(j,num_s0,taille,matrice,i);
+                //std::cout<<"teste : 1 "<<"indice: "<<j <<"ttchemin : "<<chemin_t[j]<<std::endl;
+            chemin_t[j]=chemin_t[j]+nbtopluscourtchemin(j,num_s0,NbNodes,matrice,i);
+                //std::cout<<"teste : 2 "<<"indice: "<<j <<"ttchemin : "<<chemin_t[j]<<std::endl;
             }
         }
 
     }
-
 
     std::cout<<"sommet "<<num_s0<<" taille "<<taille<<" : "<< std::endl;
     for (int i = 0; i < NbNodes; i++)
@@ -297,7 +267,7 @@ void Graphe::centraliteintermediarite()const
     }
 
     std::vector<int> Distances(taille, 0);
-    for(int i=0; i<taille; ++i)
+    for(int i=3; i<4; ++i)
     {
         Distances=Dijkstra(i);
         for(int j=0; j<taille; ++j)

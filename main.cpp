@@ -146,6 +146,8 @@ Graphe* menu(Graphe* A)
 
             A->GrapheConnexe();
             A->TestVulnerabilite();
+            A->Dessiner();
+            A->afficher();
 
             break;
 

@@ -110,6 +110,13 @@ public :
 
     }
 
+    void setsucc(std::map<const Sommet*,int> succ)
+    {
+
+        m_successeurs=succ;
+
+    }
+
 
     ///accesseur : pour la liste des successeurs
     const std::map<const Sommet*,int>& getSuccesseurs()const
@@ -411,6 +418,8 @@ public :
         nomFichier=fichier;
 
     }
+
+
 
     std::string getFichier()
     {

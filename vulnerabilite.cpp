@@ -50,7 +50,7 @@ void Graphe::TestVulnerabilite()
 
     std::vector<int> t_indice;
     std::map<const Sommet*,int> succes;
-    std::map<const Sommet*,int> temp;
+
 
 
     std::cout<<"Arrets : \n";
@@ -59,6 +59,7 @@ void Graphe::TestVulnerabilite()
         std::cout<<"Indice : "<<i<<" : "<<m_arrets[i].first<<"-"<<m_arrets[i].second<<std::endl;
 
     int indice;
+
 
     while(indice!=99)
     {
@@ -70,45 +71,43 @@ void Graphe::TestVulnerabilite()
 
     }
 
+
     t_indice.pop_back();
+
 
 
     for(auto s : m_sommets)
     {
-
-        if( s->getNum() == m_arrets[t_indice.back()].first  )
+       std::map<const Sommet*,int> temp;
+        for(int z=0; z < t_indice.size(); z++)
         {
-
-            for(auto succ : s->getSuccesseurs())
+            if(s->getNum()== m_arrets[t_indice[z]].first )
             {
-
-                for(int z=0; z < t_indice.size(); z++ )
+                for( auto succ : s->getSuccesseurs() )
                 {
-
-                    std::cout<<m_arrets[t_indice.back()].first<<"oooo "<< succ.first->getNum() <<"\n";
-
-                    if (succ.first->getNum() == m_arrets[t_indice.back()].second)
-                    {
-
-                        std::cout<<t_indice.back()<<"\n";
-                        t_indice.pop_back();
-                        std::cout<<t_indice.back()<<"\n";
-
-                    }
-                    else
-                    {
-
+                    if (succ.first->getNum() != m_arrets[t_indice[z]].second)
                         temp[succ.first]=succ.second;
-
-                    }
-
                 }
 
+                s->setsucc(temp);
             }
+
+std::map<const Sommet*,int> temp2;
+            if(s->getNum()== m_arrets[t_indice[z]].second )
+            {
+                for( auto succ : s->getSuccesseurs() )
+                {
+                    if (succ.first->getNum() != m_arrets[t_indice[z]].first)
+                        temp2[succ.first]=succ.second;
+                }
+
+                s->setsucc(temp2);
+            }
+
 
         }
 
     }
 
-}
 
+}

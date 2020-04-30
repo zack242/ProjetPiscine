@@ -73,9 +73,6 @@ public :
     {
         switch(choix)
         {
-   case 0 :
-    return m_indice.degre_non_normamise;
-
         case 1 :
             return m_indice.degre_nomralise;
 
@@ -117,7 +114,6 @@ public :
     {
 
         m_successeurs=succ;
-
 
     }
 
@@ -442,8 +438,7 @@ public :
     void calcul_indice_proximite();
     void affi_indice_Tproximite() const;
     void GrapheConnexe();
-    Graphe* Sup_aretes();
-    void ComparaisonIndice();
+    void TestVulnerabilite() ;
 };
 
 ///Proto

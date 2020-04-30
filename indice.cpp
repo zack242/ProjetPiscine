@@ -224,7 +224,7 @@ std::vector<int> Graphe::AlegoDjiskra(int num_D) // Alego de Djiskra
 
 return distance;
 
-}
+    }
 
 
 

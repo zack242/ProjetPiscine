@@ -11,9 +11,8 @@ int main()
 
  cout << "--Projet Theorie des graphes-- \n" << endl;
 
-while(!0)
-       A=menu(A);
-
+    while(!0)
+        A=menu(A);
 
 
     return 0;
@@ -130,8 +129,8 @@ Graphe* menu(Graphe* A)
             break;
 
         case 4 : ///Centralite d'intermediaire
-                 A->centraliteintermediarite();
-                A->sauvgarder(choix_indice);
+
+
             break;
 
 
@@ -192,13 +191,8 @@ Graphe* Chargement_Graphe(std::string fichier_topo, std::string fichier_ponde)  
 
     std::cout<<"\n Chargement du graphe avec "<<fichier_topo << " et " <<fichier_ponde<< " \n\n" ;
 
-
     temp_topo=fichier_topo+".txt";
     temp_pond=fichier_ponde+".txt";
-
-
-
-    std::cout<<temp_topo;
 
 
     B=new Graphe{temp_topo,temp_pond}; /// Allocation du graphe

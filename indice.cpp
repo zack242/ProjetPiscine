@@ -102,21 +102,25 @@ auto cmp = [](std::pair<const Sommet*,double> p1, std::pair<const
 {
     return p2.second<p1.second;
 };
-std::vector<int> Graphe::Dijkstra(int num_s0)const
+std::vector<std::pair<int,int>> Graphe::Dijkstra(int num_s0)const
 {
     int NbNodes=m_sommets.size();
-    std::vector<int> Distances(NbNodes, std::numeric_limits<int>::max());//pour chaque sommets on mets une distance infinie( std::numeric_limits<int>::max()) correspond a la valeur mas que peut contenir un int en C++
-    Distances[num_s0] = 0;//la distance entre le sommets de départs et lui-meme est 0
+    std::vector<std::pair<int,int>> Distances;//pour chaque sommets on mets une distance infinie( std::numeric_limits<int>::max()) correspond a la valeur mas que peut contenir un int en C++
+    ;//la distance entre le sommets de départs et lui-meme est 0
     int Parents [NbNodes][NbNodes];//pour chaque sommets on definie son parents a -1 qui corspondt a aucun parents
-
+    std::pair<int,int> innitialise;
+    innitialise.first=std::numeric_limits<int>::max();
+    innitialise.second=0;
     for (int i = 0; i < NbNodes; i++)
     {
         for (int j = 0; j < NbNodes; j++)
         {
             Parents[i][j] = -1;
+            Distances.push_back(innitialise);
 
         }
     }
+    Distances[num_s0].first = 0;
 /// déclaration de la file de priorité
     std::priority_queue<std::pair<const Sommet*,double>,
         std::vector<std::pair<const Sommet*,double>>,decltype(cmp)> file(cmp);
@@ -129,7 +133,7 @@ std::vector<int> Graphe::Dijkstra(int num_s0)const
         int w = file.top().second;
         file.pop();
 
-        if (w <= Distances[v]) // si la distance entre le succeur et sont prédécesseur est infèrieur ou égale avec la distance total
+        if (w <= Distances[v].first) // si la distance entre le succeur et sont prédécesseur est infèrieur ou égale avec la distance total
         {
             std::map<const Sommet*,int> m_successeurs; //on récupaire le vecteur contenant les succeurs
             m_successeurs=m_sommets[v]->getSuccesseurs();
@@ -138,17 +142,17 @@ std::vector<int> Graphe::Dijkstra(int num_s0)const
                 int v2 = s.first->getNum();
                 int w2 = s.second;
 
-                if (Distances[v] + w2 < Distances[v2])//si la somme de la distance entre le parcours et le prédécésseur est infèrieur a la distance du sommet où l'on arrive
+                if (Distances[v].first + w2 < Distances[v2].first)//si la somme de la distance entre le parcours et le prédécésseur est infèrieur a la distance du sommet où l'on arrive
                 {
-                    Distances[v2] = Distances[v] + w2;//on remplace cette distance
+                    Distances[v2].first = Distances[v].first + w2;//on remplace cette distance
                     Parents[v2][0] = v;//on change le predessesseur
                     for (int i=1; i<NbNodes; ++i)
                     {
                         Parents[v2][i] = -1;//on change le predessesseur
                     }
-                    file.push({m_sommets[v2],Distances[v2]});//on push le sommet et la ditance dans notre file
+                    file.push({m_sommets[v2],Distances[v2].first});//on push le sommet et la ditance dans notre file
                 }
-                else if (Distances[v] + w2 == Distances[v2])
+                else if (Distances[v].first + w2 == Distances[v2].first)
                 {
                     int dep=0;
                     while(Parents[v2][dep] != -1)
@@ -194,11 +198,12 @@ std::vector<int> Graphe::Dijkstra(int num_s0)const
             chemin_t[j]=chemin_t[j]+nbtopluscourtchemin(j,num_s0,NbNodes,matrice,i);
                 //std::cout<<"teste : 2 "<<"indice: "<<j <<"ttchemin : "<<chemin_t[j]<<std::endl;
             }
+            Distances[j].second=chemin_t[j];
         }
 
     }
 
-    std::cout<<"sommet "<<num_s0<<" taille "<<taille<<" : "<< std::endl;
+    /*std::cout<<"sommet "<<num_s0<<" taille "<<taille<<" : "<< std::endl;
     for (int i = 0; i < NbNodes; i++)
     {
         for (int j = 0; j < NbNodes; j++)
@@ -211,14 +216,14 @@ std::vector<int> Graphe::Dijkstra(int num_s0)const
     {
         if(i !=num_s0 )
         {
-            std::cout << "\nnoeud  " << num_s0 << " au noeud " << i << " longueur :  " << Distances[i]<< " nombre_chemin  " << chemin_t[i]<< std::endl;
+            std::cout << "\nnoeud  " << num_s0 << " au noeud " << i << " longueur :  " << Distances[i].first<< " nombre_chemin  " << chemin_t[i]<< std::endl;
 
             std::cout << i;
             for (auto p = Parents[i][0]; p != -1; p = Parents[p][0])
                 std::cout << " <- " << p;
             std::cout << std::endl;
         }
-    }
+    }*/
 
 
     return Distances;
@@ -230,10 +235,11 @@ void Sommet::indice_centralite(float ordre,float indicenn)
 
     normalisation=(ordre*ordre-3*ordre+2)/2;
 
-    //std::cout<<" test : "<<indicenn/normalisation<<" nn : "<<indicenn<< std::endl;
+
     m_indice.intermediaire_non_normamise=indicenn;
 
     m_indice.intermediaire_nomralise=(indicenn/normalisation);
+    std::cout<<"normalise : "<<m_indice.intermediaire_nomralise<<" nn : "<<m_indice.intermediaire_non_normamise<< std::endl;
 }
 void Graphe::centraliteintermediarite()const
 {
@@ -241,6 +247,7 @@ void Graphe::centraliteintermediarite()const
     int taille=m_sommets.size();
     float matrice[100][100];
     float matricedist[100][100];
+    float matricenbchemin[100][100];
     float indice_nn=0;
     std::vector<float> tempindice;
     std::map<const Sommet*,int> suceur;
@@ -266,25 +273,25 @@ void Graphe::centraliteintermediarite()const
 
     }
 
-    std::vector<int> Distances(taille, 0);
-    for(int i=3; i<4; ++i)
+    std::vector<std::pair<int,int>> Distances;
+    for(int i=0; i<taille; ++i)
     {
         Distances=Dijkstra(i);
         for(int j=0; j<taille; ++j)
         {
-            matricedist[i][j]=Distances[j];
+            matricedist[i][j]=Distances[j].first;
+            matricenbchemin[i][j]=Distances[j].second;
         }
     }
-    /*
+
     for (int i = 0; i < taille; i++)
     {
         for (int j = 0; j < taille; j++)
         {
-            std::cout<<matricedist[i][j]<<" ";
+            std::cout<<"("<<matricedist[i][j]<<","<<matricenbchemin[i][j]<<") ";
         }
         std::cout<<std::endl;
     }
-
 
     for (int i = 0; i < taille; ++i)
     {
@@ -299,37 +306,23 @@ void Graphe::centraliteintermediarite()const
 
                     if(matricedist[j][i]+matricedist[i][k]==matricedist[j][k])
                     {
-
-                        float tempjk=0;
-                        tempjk=nbtopluscourtchemin(j,k,taille,matrice,matricedist[j][k]);
-                        //if(1 < tempjk){
-                        float tempji,tempik;
-                        tempji=nbtopluscourtchemin(j,i,taille,matrice,matricedist[j][i]);
-                        tempik=nbtopluscourtchemin(i,k,taille,matrice,matricedist[i][k]);
-                        tempik=tempik-1;
-                        float temp=(tempji+tempik)/tempjk;
+                        float tempik=matricenbchemin[i][k]-1;
+                        float temp=(matricenbchemin[j][i]+tempik)/matricenbchemin[j][k];
                         indice_nn=indice_nn+temp;
-                         std::cout<<"id:"<<i<<" , "<<j<<" , "<<k<<" :"<< matricedist[j][i]<<" + "<<matricedist[i][k]<<" = "<<matricedist[j][k]<<std::endl;
-                        std::cout<<"temp: "<<temp<<" "<<indice_nn<<"test2 "<<i<<" : "<<temp<<" : "<<tempji<<" : "<<tempik<<" : "<<tempjk<<std::endl;
-
                     }
                 }
-
-
             }
-
-
         }
         tempindice.push_back(indice_nn);
         indice_nn=0;
     }
     for(int i=0; i<taille; ++i)
     {
-        std::cout<<"sommet " << i << " indice: "<<tempindice[i]<<std::endl;
+        //std::cout<<"sommet " << i << " indice: "<<tempindice[i]<<std::endl;
+        m_sommets[i]->indice_centralite(taille,tempindice[i]);
     }
-    for(int i=0; i<taille; ++i)
-        m_sommets[i]->indice_centralite(taille,tempindice[i]); //On envoie l'ordre du graphe -1
-    */
+
+
 }
 
 

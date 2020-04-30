@@ -394,6 +394,7 @@ public :
             break ;
 
         case 4 :
+
             nomFichier="indice_intermediaire.txt";
             break ;
         }
@@ -426,7 +427,7 @@ public :
     void calcul_indice_degres() ;
 
 
-std::vector<int> Dijkstra(int num_s0)const;
+std::vector<std::pair<int,int>> Dijkstra(int num_s0)const;
 void centraliteintermediarite()const;
 
     void Visualisation_indice(int i);
